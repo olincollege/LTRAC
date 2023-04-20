@@ -12,7 +12,63 @@
         border-radius: 5px;
         cursor: pointer;
     }
+
+    .routines{
+        list-style: none;
+        display: flex;
+    }
+
+    .routine-block{
+        margin-right: 60px;
+        text-align: left;
+    }
+    
+    .routine-name{
+        font-size:30px;
+        margin-right: 60px;
+    } 
+
+    .routine-entry{
+        margin-bottom: 10px;
+    }
+
+    .no-routine-msg{
+        font-size: 30px;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
 </style>
-<h1>Your Routines</h1>
-<a class="button" href="/add-exercise">Create new routine</a>
-{% endblock %}
+
+<h1>My Routines</h1>
+<a class="button" href="/add-exercise">Create new routine</a><br><br>
+
+<div class="routines">
+{%if length != 0%}
+    {%for routine in routines%}
+        <div class="routine-block">
+            {% for key,value in routine.items() %}
+                <h1 class="routine-name">
+                    {{key}}
+                </h1>
+
+                <ul>
+                    {% for routine in value %}
+                        <li class="routine-entry">{{routine}}</li>
+                    {%endfor%}
+                </ul>
+            {%endfor%}
+        </div>
+        {% if loop.index % 5 == 0 %}
+            </div><div class="row">
+        {% endif %}     
+    {%endfor%}
+{% else %}
+    <h1 class="no-routine-msg">You currently have no routines. Create a routine to display them here</h1>
+{% endif %}
+{%endblock%}
+
+
