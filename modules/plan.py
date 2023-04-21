@@ -10,9 +10,25 @@ class Exercise:
         sets: An integer representing the number of sets for the exercise
     """
 
-    def __init__(self, name_id, sets_id):
-        self.name = request.args.get(name_id)
-        self.sets = request.args.get(sets_id)
+    def __init__(self, name, sets):
+        self.name = name
+        self.sets = sets
+
+    @classmethod
+    def from_input(cls, name_id, sets_id):
+        """
+        Create exercise from user input through the website
+
+        Args:
+            name_id: A string representing the html variable label for the name
+                of the exercise
+            sets_id: A string representing the html variable label for the
+                number of sets for the exercise
+
+        Returns:
+            An Exercise object with the name and sets
+        """
+        return cls(request.args.get(name_id), request.args.get(sets_id))
 
     def __repr__(self):
         return f"{self.name}, {self.sets}"
@@ -32,9 +48,9 @@ class Routine:
         self.exercises = {}
         self.name = request.args.get(name_id)
 
-    def add_exercise(self, name_id, sets_id):
+    def add_exercise_from_input(self, name_id, sets_id):
         """
-        Add an exercise to the routine
+        Add an exercise to the routine from user input through the website
 
         Args:
             name_id: A string representing the html variable label for the name
@@ -42,7 +58,7 @@ class Routine:
             sets_id: A string representing the html variable label for the
                 number of sets for the exercise
         """
-        exercise = Exercise(name_id, sets_id)
+        exercise = Exercise.from_input(name_id, sets_id)
         self.exercises[exercise.name] = exercise
 
     def __repr__(self):
