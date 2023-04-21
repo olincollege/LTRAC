@@ -18,7 +18,7 @@ class Exercise:
     @classmethod
     def from_input(cls, name_id, sets_id):
         """
-        Create exercise from user input through the website
+        Create exercise from Flask input
 
         Args:
             name_id: A string representing the html variable label for the name
@@ -75,7 +75,7 @@ class Routine:
     @classmethod
     def from_input(cls, name_id):
         """
-        Create Routine from flask input
+        Create Routine from Flask input
 
         Args:
             name_id: A string representing the html variable label for the name
