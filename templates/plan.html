@@ -51,9 +51,10 @@
     {%for routine in routines%}
         <div class="routine-block">
             {% for key,value in routine.items() %}
-                <h1 class="routine-name">
+                <a href="{{url_for('add_new_exercise',routine=key)}}"><h1 class="routine-name">
                     {{key}}
                 </h1>
+            </a>
 
                 <ul>
                     {% for routine in value %}

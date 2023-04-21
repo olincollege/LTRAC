@@ -1,5 +1,5 @@
 from flask import url_for, Flask, render_template, request, redirect
-from modules import plan
+from modules.plan import Exercise, Routine
 
 app = Flask(__name__)
 
@@ -18,9 +18,9 @@ def plan_page():
     """
     Renders page for viewing routines/add new routine
     """
-
-    length = len(routines)
-    return render_template("plan.html", routines=routines, length=length)
+    print(routines)
+    display = routines
+    return render_template("plan.html", routines=display, length=len(display))
 
 
 # ------------- New routine --------------------#
@@ -34,39 +34,40 @@ def new_routine():
     return render_template("addroutine.html")
 
 
+@app.route("/submit-routine")
+def submit_routine():
+    """
+    docs
+    """
+    new_routine_name = request.args.get("routine-name")
+    routines[new_routine_name] = Routine(new_routine_name)
+    return redirect(url_for("add_new_exercise", routine=new_routine_name))
+
+
 # ------------- Add exercise to routine ------------- #
 
 
-@app.route("/add-exercise")
-def add_new_exercise():
+@app.route("/add-exercise/<routine>")
+def add_new_exercise(routine):
     """
     Renders page for adding new exercise
     """
-    routine_name = request.args.get("routine-name")
-    return render_template("addexercise.html", routine_name=routine_name)
+    return render_template("addexercise.html", routine_name=routine)
 
 
-@app.route("/submit-exercise")
-def submit_exercise():
+@app.route("/submit-exercise/<routine>")
+def submit_exercise(routine):
     """
     Adds new exercise to routine
     Sends user back to add more exercises
     """
-
-    return redirect(url_for("add_new_exercise"))
-
-
-@app.route("/submit-routine")
-def submit_routine():
-    """
-    Adds new routine to a list of routines
-    """
-
-    return redirect(url_for("plan_page"))
+    routines[routine].add_exercise_from_input("exercise-name", "sets")
+    return redirect(url_for("add_new_exercise", routine=routine))
 
 
 if __name__ == "__main__":
-    routines = [
+    routines = {}
+    routines2 = [
         {"Routine 1": ["Leg Press", "Squats", "Deadlift"]},
         {"Routine 2": ["Lat pull down", "Pull ups"]},
         {"Routine 3": ["Leg Press", "Squats"]},

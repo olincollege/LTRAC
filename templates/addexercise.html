@@ -59,7 +59,7 @@
     }
 </style>
 <h1>Add exercise for {{routine_name}}</h1>
-<form action="/add-exercise" method="get">
+<form action="{{url_for('submit_exercise',routine=routine_name)}}" method="get">
     <label for="exercise-name">Exercise Name:</label>
     <input type="text" id="exercise-name" name="exercise-name" required>
     
@@ -67,7 +67,6 @@
     <input type="number" id="sets" name="sets" required>
     <div class="button-container">
         <button type="submit">Add to Routine</button>
-        <a class="button" href="/submit-routine">Create Routine</a>
     </div>
 </form>
 <!-- <form action="/submit-routine" method="get">
