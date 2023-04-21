@@ -35,29 +35,6 @@ class Exercise:
         """
         return cls(request.args.get(name_id), request.args.get(sets_id))
 
-    @classmethod
-    def from_json(cls, file_path):
-        """
-        Create exercise from json file
-
-        Args:
-            file_path: A string representing the path to the json file
-        """
-        with open(file_path, "r", encoding="UTF-8") as file:
-            json_dict = json.load(file)
-            return cls(json_dict["name"], json_dict["sets"])
-
-    def to_json(self, file_path):
-        """
-        Export exercise to json file
-
-        Args:
-            file_path: A string representing the path to the json file
-        """
-        json_str = json.dumps(self.__dict__)
-        with open(file_path, "w", encoding="UTF-8") as file:
-            file.write(json_str)
-
     def __repr__(self):
         return f"{self.name}, {self.sets}"
 
