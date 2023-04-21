@@ -1,5 +1,9 @@
-from flask import request
+"""
+Classes for creating a workout routine for LTRAC
+"""
+
 import json
+from flask import request
 
 
 class Exercise:
