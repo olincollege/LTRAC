@@ -83,6 +83,22 @@ class Routine:
         """
         return cls(request.args.get(name_id))
 
+    @classmethod
+    def from_json(cls, file_path):
+        """
+        Create routine from json file
+
+        Args:
+            file_path: A string representing the path to the json file
+        """
+        with open(file_path, "r", encoding="UTF-8") as file:
+            json_dict = json.load(file)
+        routine = Routine(json_dict["name"])
+        for key, item in json_dict["exercises"].items():
+            exercise = Exercise(item["name"], item["sets"])
+            routine.exercises[key] = exercise
+        return routine
+
     def add_exercise_from_input(self, name_id, sets_id):
         """
         Add an exercise to the routine from user input through the website
