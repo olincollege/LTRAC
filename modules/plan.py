@@ -12,11 +12,12 @@ class Exercise:
 
 class Routine:
     def __init__(self, name_id):
-        self.exercises = []
+        self.exercises = {}
         self.name = request.args.get(name_id)
 
     def add_exercise(self, name_id, sets_id):
-        self.exercises.append(Exercise(name_id, sets_id))
+        exercise = Exercise(name_id, sets_id)
+        self.exercises[exercise.name] = exercise
 
     def __repr__(self):
         return " ".join([ex.__repr__() for ex in self.exercises])
