@@ -39,6 +39,4 @@ class Routine:
         self.exercises[exercise.name] = exercise
 
     def __repr__(self):
-        return " ".join(
-            [self.exercises[ex].__repr__() for ex in self.exercises]
-        )
+        return " ".join([ex.__repr__() for ex in self.exercises.items()])
