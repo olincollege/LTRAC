@@ -18,7 +18,6 @@ def plan_page():
     """
     Renders page for viewing routines/add new routine
     """
-    print(routines)
     display = [rout.to_html_display() for _, rout in routines.items()]
     return render_template("plan.html", routines=display, length=len(display))
 
@@ -65,15 +64,26 @@ def submit_exercise(routine):
     return redirect(url_for("add_new_exercise", routine=routine))
 
 
+# ---------------------Logging-------------------- #
+
+
+@app.route("/logs")
+def logs_page():
+    """
+    Renders logging page
+    """
+    display = [rout.to_html_display() for _, rout in routines.items()]
+    return render_template("logs.html", routines=display, length=len(display))
+
+
+@app.route("/logs/<routine>")
+def log_exercise(routine):
+    """
+    Renders page for user to enter weights for each exercise in a routine
+    """
+    return render_template("routinelog.html", routine=routine)
+
+
 if __name__ == "__main__":
     routines = {}
-    routines2 = [
-        {"Routine 1": ["Leg Press", "Squats", "Deadlift"]},
-        {"Routine 2": ["Lat pull down", "Pull ups"]},
-        {"Routine 3": ["Leg Press", "Squats"]},
-        {"Routine 4": ["Leg Press", "Squats"]},
-        {"Routine 5": ["Leg Press", "Squats"]},
-        {"Routine 6": ["Leg Press", "Squats"]},
-        {"Routine 7": ["Leg Press", "Squats"]},
-    ]
     app.run(debug=True)
