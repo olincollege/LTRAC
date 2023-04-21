@@ -11,8 +11,9 @@ class Exercise:
 
 
 class Routine:
-    def __init__(self):
+    def __init__(self, name_id):
         self.exercises = []
+        self.name = request.args.get(name_id)
 
     def add_exercise(self, name_id, sets_id):
         self.exercises.append(Exercise(name_id, sets_id))
