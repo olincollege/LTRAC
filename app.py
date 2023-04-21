@@ -19,7 +19,7 @@ def plan_page():
     Renders page for viewing routines/add new routine
     """
     print(routines)
-    display = routines
+    display = [rout.to_html_display() for _, rout in routines.items()]
     return render_template("plan.html", routines=display, length=len(display))
 
 
