@@ -2,6 +2,14 @@ from flask import request
 
 
 class Exercise:
+    """
+    A gym exercise with number of sets
+
+    Attributes:
+        name: A string representing the name of the routine
+        sets: An integer representing the number of sets for the exercise
+    """
+
     def __init__(self, name_id, sets_id):
         self.name = request.args.get(name_id)
         self.sets = request.args.get(sets_id)
@@ -17,7 +25,6 @@ class Routine:
     Attributes:
         exercises: A dictionary mapping the string of the exercise name to the
             corresponding exercise object
-
         name: A string representing the name of the routine
     """
 
