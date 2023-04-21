@@ -54,8 +54,8 @@ class Exercise:
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json_str)
 
-    def __repr__(self):
-        return f"{self.name}, {self.sets}"
+    # def __repr__(self):
+    #     return f"{self.name}, {self.sets}"
 
 
 class Routine:
@@ -95,6 +95,20 @@ class Routine:
         """
         exercise = Exercise.from_input(name_id, sets_id)
         self.exercises[exercise.name] = exercise
+
+    def to_json(self, file_path):
+        """
+        Export routine to json file
+
+        Args:
+            file_path: A string representing the path to the json file
+        """
+        json_dict = self.__dict__.copy()
+        json_dict["exercises"] = {
+            key: ex.__dict__ for key, ex in json_dict["exercises"].items()
+        }
+        with open(file_path, "w", encoding="UTF-8") as file:
+            file.write(json.dumps(json_dict, indent=4))
 
     def __repr__(self):
         return " ".join([ex.__repr__() for ex in self.exercises.items()])
