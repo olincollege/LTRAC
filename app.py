@@ -19,12 +19,22 @@ def plan_page():
     Renders page for viewing routines/add new routine
     """
 
-    # print(routines)
     length = len(routines)
-    my_list = ["1", "2", "3"]
-    return render_template(
-        "plan.html", routines=routines, length=length, my_list=my_list
-    )
+    return render_template("plan.html", routines=routines, length=length)
+
+
+# ------------- New routine --------------------#
+
+
+@app.route("/add-routine")
+def new_routine():
+    """
+    Asks user for a routine name, then redirects them to /add-exercise
+    """
+    return render_template("addroutine.html")
+
+
+# ------------- Add exercise to routine ------------- #
 
 
 @app.route("/add-exercise")
@@ -32,7 +42,8 @@ def add_new_exercise():
     """
     Renders page for adding new exercise
     """
-    return render_template("addexercise.html")
+    routine_name = request.args.get("routine-name")
+    return render_template("addexercise.html", routine_name=routine_name)
 
 
 @app.route("/submit-exercise")
@@ -41,7 +52,7 @@ def submit_exercise():
     Adds new exercise to routine
     Sends user back to add more exercises
     """
-    # routines[-1].add_exercise("exercise-name", "sets")
+
     return redirect(url_for("add_new_exercise"))
 
 
@@ -50,7 +61,7 @@ def submit_routine():
     """
     Adds new routine to a list of routines
     """
-    # routines.append(plan.Routine())
+
     return redirect(url_for("plan_page"))
 
 
