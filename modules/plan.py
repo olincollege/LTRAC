@@ -80,6 +80,15 @@ class Routine:
             routine.exercises[key] = exercise
         return routine
 
+    def add_exercise(self, exercise):
+        """
+        Add an exercise to the routine
+
+        Args:
+            exercise: An Exercise object to be added to the routine
+        """
+        self.exercises[exercise.name] = exercise
+
     def add_exercise_from_input(self, name_id, sets_id):
         """
         Add an exercise to the routine from user input through the website
@@ -91,7 +100,7 @@ class Routine:
                 number of sets for the exercise
         """
         exercise = Exercise.from_input(name_id, sets_id)
-        self.exercises[exercise.name] = exercise
+        self.add_exercise(exercise)
 
     def to_json(self, file_path):
         """
