@@ -1,0 +1,17 @@
+{
+    "exercises": {
+        "Leg Press": {
+            "name": "Leg Press",
+            "sets": 3
+        },
+        "Calf Raises": {
+            "name": "Calf Raises",
+            "sets": 3
+        },
+        "Leg Curls": {
+            "name": "Leg Curls",
+            "sets": 3
+        }
+    },
+    "name": "Leg Day"
+}
