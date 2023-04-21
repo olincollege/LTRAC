@@ -68,9 +68,20 @@ class Routine:
         name: A string representing the name of the routine
     """
 
-    def __init__(self, name_id):
+    def __init__(self, name):
         self.exercises = {}
-        self.name = request.args.get(name_id)
+        self.name = name
+
+    @classmethod
+    def from_input(cls, name_id):
+        """
+        Create Routine from flask input
+
+        Args:
+            name_id: A string representing the html variable label for the name
+                of the routine
+        """
+        return cls(request.args.get(name_id))
 
     def add_exercise_from_input(self, name_id, sets_id):
         """
