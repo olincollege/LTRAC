@@ -54,8 +54,8 @@ class Exercise:
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json_str)
 
-    # def __repr__(self):
-    #     return f"{self.name}, {self.sets}"
+    def __repr__(self):
+        return f"{self.name}, {self.sets}"
 
 
 class Routine:
