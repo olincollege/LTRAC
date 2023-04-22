@@ -1,7 +1,40 @@
 {%extends 'base.html'%}
 
 {%block main%} 
+<style>
+    .input{
+        max-width: 50px;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+
+    button{
+        background-color: #08712b;
+        text-decoration: none;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
 
 <h1>Workout log for {{routine}}</h1>
-
+<form method="post" action="/logs">
+    {% for exercise in inputs %}
+        <h2>{{exercise[0]}}</h2>
+        {% for set in range(exercise[1])%}
+            <input class="input" type="number" name="{{ exercise[0] }} {{loop.index0}}"
+            id="{{ exercise[0] }}{{loop.index0}}" placeholder="Set {{loop.index0 + 1}}" required>
+        {%endfor%}
+    {% endfor %}
+    <h1><button type="submit">Finish Logging</button></h1>
+</form>
 {%endblock%}

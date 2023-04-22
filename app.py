@@ -67,11 +67,19 @@ def submit_exercise(routine):
 # ---------------------Logging-------------------- #
 
 
-@app.route("/logs")
+@app.route("/logs", methods=["GET", "POST"])
 def logs_page():
     """
     Renders logging page
     """
+    if request.method == "POST":
+        for exercise in exercise_list:
+            for sets in range(exercise[1]):
+                current_exercise = exercise[0]
+                print(
+                    current_exercise, request.form[f"{current_exercise} {sets}"]
+                )
+
     display = [rout.to_html_display() for _, rout in routines.items()]
     return render_template("logs.html", routines=display, length=len(display))
 
@@ -81,9 +89,13 @@ def log_exercise(routine):
     """
     Renders page for user to enter weights for each exercise in a routine
     """
-    return render_template("routinelog.html", routine=routine)
+
+    return render_template(
+        "routinelog.html", routine=routine, inputs=exercise_list
+    )
 
 
 if __name__ == "__main__":
     routines = {}
+    exercise_list = [["Squats", 3], ["Deadlift", 4]]
     app.run(debug=True)
