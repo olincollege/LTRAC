@@ -63,9 +63,6 @@ class Exercise:
         """
         self.log_weights(date.isoformat, weights)
 
-    def __repr__(self):
-        return f"{self.name}, {self.sets}"
-
 
 class Routine:
     """
