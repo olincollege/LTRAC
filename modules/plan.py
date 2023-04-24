@@ -61,7 +61,7 @@ class Exercise:
                 exercise. Length of list should be equal to the number of sets
                 for the exercise.
         """
-        self.log_weights(date.isoformat, weights)
+        self.log_weights(date.today().isoformat(), weights)
 
 
 class Routine:
