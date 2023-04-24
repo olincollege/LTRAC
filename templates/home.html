@@ -1,5 +1,21 @@
 {% extends 'base.html'%}
 
 {% block main %}
+<style>
+.background{
+    background-image: url('static/img/LGRAC.jpg');
+    opacity: 0.65;
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+</style>
+<div class="background"></div>
 <h1>Welcome to LTRAC</h1>
 {% endblock %}
