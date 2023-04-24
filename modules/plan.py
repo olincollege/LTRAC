@@ -3,6 +3,8 @@ Classes for creating a workout routine for LTRAC
 """
 
 import json
+from datetime import date
+import pandas as pd
 from flask import request
 
 
@@ -13,11 +15,15 @@ class Exercise:
     Attributes:
         name: A string representing the name of the routine
         sets: An integer representing the number of sets for the exercise
+        history: A dictionary mapping strings of dates to a list of integers,
+            representing the weights used on that day. The length of the list
+            will be equal to the number of sets.
     """
 
     def __init__(self, name, sets):
         self.name = name
         self.sets = sets
+        self.history = {}
 
     @classmethod
     def from_input(cls, name_id, sets_id):
@@ -35,8 +41,8 @@ class Exercise:
         """
         return cls(request.args.get(name_id), request.args.get(sets_id))
 
-    # def __repr__(self):
-    #     return f"{self.name}, {self.sets}"
+    def __repr__(self):
+        return f"{self.name}, {self.sets}"
 
 
 class Routine:
@@ -116,15 +122,20 @@ class Routine:
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json.dumps(json_dict, indent=4))
 
-    def to_html_display(self):
+    def log_to_csv(self, file_path):
         """
-        Format the Routine to be displayed by Flask
+        Export history of each exercise to single csv
 
-        Returns:
-            A dictionary mapping the name of the routine to a list of exercise
-            names
+        Args:
+            file_path: A string representing the path to the csv file
         """
-        return {self.name: [ex.name for _, ex in self.exercises.items()]}
+        log_df = pd.DataFrame()
+        for _, ex in self.exercises.items():
+            ex_df = pd.DataFrame(ex.history)
+            ex_df.insert(0, "Exercise", [ex.name] * ex.sets)
+            ex_df.insert(1, "Set", [1, 2, 3])
+            log_df = pd.concat([log_df, ex_df], ignore_index=True)
+        log_df.to_csv(file_path)
 
     def __repr__(self):
         return " ".join([ex.__repr__() for ex in self.exercises.items()])
