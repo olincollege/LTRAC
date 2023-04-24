@@ -4,6 +4,7 @@ Classes for creating a workout routine for LTRAC
 
 import json
 from flask import request
+from datetime import date
 
 
 class Exercise:
@@ -39,16 +40,28 @@ class Exercise:
         """
         return cls(request.args.get(name_id), request.args.get(sets_id))
 
-    def log_weights(self, weights):
+    def log_weights(self, date_iso, weights):
         """
-        Log weights used for exercise on a single day
+        Log weights used for exercise for today
+
+        Args:
+            date: A string representing the date in ISO format (YYYY-MM-DD)
+            weights: A list of integers representing the weights used in the
+                exercise. Length of list should be equal to the number of sets
+                for the exercise.
+        """
+        self.history[date_iso] = weights
+
+    def log_weights_today(self, weights):
+        """
+        Log weights used for exercise for today
 
         Args:
             weights: A list of integers representing the weights used in the
                 exercise. Length of list should be equal to the number of sets
                 for the exercise.
         """
-        pass
+        self.log_weights(date.isoformat, weights)
 
     def __repr__(self):
         return f"{self.name}, {self.sets}"
