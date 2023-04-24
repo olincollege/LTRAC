@@ -13,11 +13,15 @@ class Exercise:
     Attributes:
         name: A string representing the name of the routine
         sets: An integer representing the number of sets for the exercise
+        history: A dictionary mapping strings of dates to a list of integers,
+            representing the weights used on that day. The length of the list
+            will be equal to the number of sets.
     """
 
     def __init__(self, name, sets):
         self.name = name
         self.sets = sets
+        self.history = {}
 
     @classmethod
     def from_input(cls, name_id, sets_id):
@@ -34,6 +38,17 @@ class Exercise:
             An Exercise object with the name and sets
         """
         return cls(request.args.get(name_id), request.args.get(sets_id))
+
+    def log_weights(self, weights):
+        """
+        Log weights used for exercise on a single day
+
+        Args:
+            weights: A list of integers representing the weights used in the
+                exercise. Length of list should be equal to the number of sets
+                for the exercise.
+        """
+        pass
 
     def __repr__(self):
         return f"{self.name}, {self.sets}"
