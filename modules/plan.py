@@ -116,15 +116,5 @@ class Routine:
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json.dumps(json_dict, indent=4))
 
-    def to_html_display(self):
-        """
-        Format the Routine to be displayed by Flask
-
-        Returns:
-            A dictionary mapping the name of the routine to a list of exercise
-            names
-        """
-        return {self.name: [ex.name for _, ex in self.exercises.items()]}
-
     def __repr__(self):
         return " ".join([ex.__repr__() for ex in self.exercises.items()])
