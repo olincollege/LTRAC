@@ -35,8 +35,8 @@ class Exercise:
         """
         return cls(request.args.get(name_id), request.args.get(sets_id))
 
-    def __repr__(self):
-        return f"{self.name}, {self.sets}"
+    # def __repr__(self):
+    #     return f"{self.name}, {self.sets}"
 
 
 class Routine:

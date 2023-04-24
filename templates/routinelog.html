@@ -24,16 +24,13 @@
         cursor: pointer;
     }
 </style>
-
-
-<h1>Workout log for {{routine}}</h1>
-<form method="post" action="/logs">
-    {% for exercise in inputs %}
-        <h2>{{exercise[0]}}</h2>
-        {% for set in range(exercise[1])%}
-            <input class="input" type="number" name="{{ exercise[0] }} {{loop.index0}}"
-            id="{{ exercise[0] }}{{loop.index0}}" placeholder="Set {{loop.index0 + 1}}" required>
-        {%endfor%}
+<form method="post" action="{{url_for('submit_log',routine=routine)}}">
+    {% for _,exercise in inputs.items() %}
+            <h2>{{exercise.name}}</h2>
+            {% for set in range(exercise.sets|int)%}
+                <input class="input" type="number" name="{{ exercise.name }} {{loop.index0}}"
+                id="{{ exercise.name }}{{loop.index0}}" placeholder="Set {{loop.index0 + 1}}" required>
+            {%endfor%}
     {% endfor %}
     <h1><button type="submit">Finish Logging</button></h1>
 </form>

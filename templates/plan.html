@@ -49,29 +49,25 @@
 
 <h1>My Routines</h1>
 <a class="button" href="/add-routine">Create new routine</a><br><br>
-
 <div class="routines">
-{%if length != 0%}
-    {%for routine in routines%}
-        <div class="routine-block">
-            {% for key,value in routine.items() %}
-                <a href="{{url_for('add_new_exercise',routine=key)}}">
+    {%if length != 0%}
+        {%for _, routine in routines.items()%}
+            <div class="routine-block">
+                <a href="{{url_for('add_new_exercise',routine=routine.name)}}">
                     <h1 class="routine-name">
-                    {{key}}
+                    {{routine.name}}
                     </h1>
                 </a>
 
                 <ul>
-                    {% for routine in value %}
-                        <li class="routine-entry">{{routine}}</li>
+                    {% for _, exercise in routine.exercises.items() %}
+                        <li class="routine-entry">{{exercise.name}} - {{exercise.sets}} sets</li>
                     {%endfor%}
                 </ul>
-            {%endfor%}
-        </div>
-    {%endfor%}
-{% else %}
-    <h1 class="no-routine-msg">You currently have no routines. Create a routine to display them here</h1>
-{% endif %}
-{%endblock%}
-
-
+            </div>
+        {%endfor%}
+    {% else %}
+        <h1 class="no-routine-msg">You currently have no routines. Create a routine to display them here</h1>
+    {% endif %}
+    {%endblock%}
+    
