@@ -41,8 +41,28 @@ class Exercise:
         """
         return cls(request.args.get(name_id), request.args.get(sets_id))
 
-    def __repr__(self):
-        return f"{self.name}, {self.sets}"
+    def log_weights(self, date_iso, weights):
+        """
+        Log weights used for exercise for today
+
+        Args:
+            date: A string representing the date in ISO format (YYYY-MM-DD)
+            weights: A list of integers representing the weights used in the
+                exercise. Length of list should be equal to the number of sets
+                for the exercise.
+        """
+        self.history[date_iso] = weights
+
+    def log_weights_today(self, weights):
+        """
+        Log weights used for exercise for today
+
+        Args:
+            weights: A list of integers representing the weights used in the
+                exercise. Length of list should be equal to the number of sets
+                for the exercise.
+        """
+        self.log_weights(date.today().isoformat(), weights)
 
 
 class Routine:
