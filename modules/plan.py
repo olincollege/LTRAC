@@ -3,8 +3,9 @@ Classes for creating a workout routine for LTRAC
 """
 
 import json
-from flask import request
 from datetime import date
+import pandas as pd
+from flask import request
 
 
 class Exercise:
@@ -140,6 +141,21 @@ class Routine:
         }
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json.dumps(json_dict, indent=4))
+
+    def log_to_csv(self, file_path):
+        """
+        Export history of each exercise to single csv
+
+        Args:
+            file_path: A string representing the path to the csv file
+        """
+        log_df = pd.DataFrame()
+        for _, ex in self.exercises.items():
+            ex_df = pd.DataFrame(ex.history)
+            ex_df.insert(0, "Exercise", [ex.name] * ex.sets)
+            ex_df.insert(1, "Set", [1, 2, 3])
+            log_df = pd.concat([log_df, ex_df], ignore_index=True)
+        log_df.to_csv(file_path)
 
     def __repr__(self):
         return " ".join([ex.__repr__() for ex in self.exercises.items()])
