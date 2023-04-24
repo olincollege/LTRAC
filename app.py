@@ -94,17 +94,17 @@ def submit_log(routine):
     """
     Submit weights user entered
     """
-    print(routine)
+
     if request.method == "POST":
         for _, exercise in routines[routine].exercises.items():
             current_exercise = exercise.name
-            weights = [
+            weight_list = [
                 request.form[f"{current_exercise} {i}"]
                 for i in range(int(exercise.sets))
             ]
-            print(exercise.name)
-            print(weights)
-
+            # A list that contains weights, ex: [50,55,60]
+            exercise.log_weights_today(weight_list)
+        routines[routine].log_to_csv(f"{routine}.csv")
     return redirect(url_for("logs_page"))
 
 
