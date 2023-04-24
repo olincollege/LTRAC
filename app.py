@@ -1,3 +1,6 @@
+"""
+website framework
+"""
 from flask import url_for, Flask, render_template, request, redirect
 from modules.plan import Exercise, Routine
 
@@ -36,7 +39,7 @@ def new_routine():
 @app.route("/submit-routine")
 def submit_routine():
     """
-    docs
+    Adds routine to Routine object
     """
     new_routine_name = request.args.get("routine-name")
     routines[new_routine_name] = Routine(new_routine_name)
@@ -70,7 +73,7 @@ def submit_exercise(routine):
 @app.route("/logs", methods=["GET", "POST"])
 def logs_page():
     """
-    Renders logging page
+    Renders logging page, access user input if present
     """
     if request.method == "POST":
         for exercise in exercise_list:
