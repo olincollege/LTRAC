@@ -142,7 +142,7 @@ class Routine:
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json.dumps(json_dict, indent=4))
 
-    def log_to_csv(self, file_path):
+    def export_log(self, file_path):
         """
         Export history of each exercise to single csv
 
@@ -156,6 +156,21 @@ class Routine:
             ex_df.insert(1, "Set", [1, 2, 3])
             log_df = pd.concat([log_df, ex_df], ignore_index=True)
         log_df.to_csv(file_path)
+
+    def load_log(self, file_path):
+        """
+        Load history of each exercise from csv. Assumes the routine is already
+        initialized with matching exercises through json.
+
+        Args:
+            file_path: A string representing the path to the csv file
+        """
+        routine_df = pd.read_csv(file_path, index_col=0)
+        for _, ex in self.exercises.items():
+            ex_df = routine_df[routine_df["Exercise"] == ex.name]
+            days = list(routine_df.columns[2:])
+            for day in days:
+                ex.log_weights(day, list(ex_df[day]))
 
     def __repr__(self):
         return " ".join([ex.__repr__() for ex in self.exercises.items()])
