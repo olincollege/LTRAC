@@ -100,6 +100,11 @@ def submit_log(routine):
     """
 
     if request.method == "POST":
+        try:
+            routines[routine].load_log(f"user_data/logs/{routine}.csv")
+        except FileNotFoundError:
+            pass
+
         for _, exercise in routines[routine].exercises.items():
             current_exercise = exercise.name
             weight_list = [
