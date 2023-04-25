@@ -27,3 +27,12 @@ class User:
         Calculate the level of the user
         """
         return self.xp_points // self.XP_PER_LEVEL
+
+    def add_routine(self, routine):
+        """
+        Add a routine to the user's routines
+
+        args:
+            routine: A Routine object to be added to the user's routines
+        """
+        self.routines[routine.name] = routine
