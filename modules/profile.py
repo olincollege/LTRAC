@@ -15,7 +15,15 @@ class User:
             workout routines
     """
 
+    XP_PER_LEVEL = 1000
+
     def __init__(self, name, xp_points=0):
         self.name = name
         self.xp_points = xp_points
         self.routines = {}
+
+    def level(self):
+        """
+        Calculate the level of the user
+        """
+        return self.xp_points // self.XP_PER_LEVEL
