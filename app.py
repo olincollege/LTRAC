@@ -1,6 +1,7 @@
 """
 website framework
 """
+import os
 from flask import url_for, Flask, render_template, request, redirect
 from modules.plan import Exercise, Routine
 
@@ -12,6 +13,7 @@ def home():
     """
     Renders home page
     """
+    print(routines)
     return render_template("home.html")
 
 
@@ -43,6 +45,7 @@ def submit_routine():
     """
     new_routine_name = request.args.get("routine-name")
     routines[new_routine_name] = Routine(new_routine_name)
+
     return redirect(url_for("add_new_exercise", routine=new_routine_name))
 
 
@@ -64,6 +67,7 @@ def submit_exercise(routine):
     Sends user back to add more exercises
     """
     routines[routine].add_exercise_from_input("exercise-name", "sets")
+    routines[routine].to_json(f"user_data/routines/{routine}.json")
     return redirect(url_for("add_new_exercise", routine=routine))
 
 
@@ -73,7 +77,7 @@ def submit_exercise(routine):
 @app.route("/logs")
 def logs_page():
     """
-    Renders logging page, access user input if present
+    Renders logging page
     """
     return render_template("logs.html", routines=routines, length=len(routines))
 
@@ -104,10 +108,16 @@ def submit_log(routine):
             ]
             # A list that contains weights, ex: [50,55,60]
             exercise.log_weights_today(weight_list)
-        routines[routine].log_to_csv(f"{routine}.csv")
+            # Save to csv
+        routines[routine].export_log(f"user_data/logs/{routine}.csv")
     return redirect(url_for("logs_page"))
 
 
 if __name__ == "__main__":
     routines = {}
+    directory = "user_data/routines/"
+    for filename in os.listdir(directory):
+        curr_routine = Routine.from_json(f"{directory}{filename}")
+        routines[curr_routine.name] = curr_routine
+
     app.run(debug=True)
