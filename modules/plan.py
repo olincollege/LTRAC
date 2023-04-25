@@ -170,7 +170,8 @@ class Routine:
             ex_df = routine_df[routine_df["Exercise"] == ex.name]
             days = list(routine_df.columns[2:])
             for day in days:
-                ex.log_weights(day, list(ex_df[day]))
+                if not all(ex_df[day].isna()):
+                    ex.log_weights(day, list(ex_df[day]))
 
     def __repr__(self):
         return " ".join([ex.__repr__() for ex in self.exercises.items()])
