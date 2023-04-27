@@ -92,9 +92,9 @@ class User:
 
     def to_json(self):
         """
-        Export user to json file in the directory
-        'user_data/[USERNAME]/[USERNAME].json' Creates the directory if it
-        doesn't exist already
+        Export user to json file in the directory 'user_data/[USERNAME]' with
+        the name '[USERNAME].json' Creates the directory if it doesn't exist
+        already
         """
         json_dict = self.__dict__.copy()
         json_dict["routines"] = list(json_dict["routines"].keys())
