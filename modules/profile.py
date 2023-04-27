@@ -2,6 +2,7 @@
 Functions for creating new users and viewing stats in LTRAC
 """
 from dates import Weekday
+from flask import request
 
 
 class User:
@@ -38,6 +39,15 @@ class User:
         """
         return self.xp_points // self.XP_PER_LEVEL
 
+    def gain_xp(self, gained_xp):
+        """
+        Gain an amount of xp for completing a workout
+
+        args:
+            gained_xp: An integer representing the amount of xp gained
+        """
+        self.xp_points += gained_xp
+
     def add_routine(self, routine):
         """
         Add a routine to the user's routines
@@ -60,3 +70,20 @@ class User:
                 self.workout_days[day] = True
             else:
                 self.workout_days[day] = False
+
+    def log_workout(self, routine_name):
+        """
+        Log all exercises in a routine by pulling from user inputted values in
+        Flask, then gain xp
+
+        args:
+            routine_name: A string representing the routine to log
+        """
+        for _, exercise in self.routines[routine_name].exercises.items():
+            current_exercise = exercise.name
+            weight_list = [
+                request.form[f"{current_exercise} {i}"]
+                for i in range(int(exercise.sets))
+            ]
+            exercise.log_weights_today(weight_list)
+        self.gain_xp(100)
