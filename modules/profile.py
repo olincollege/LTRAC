@@ -111,3 +111,21 @@ class User:
             f"{dir_path}/{name_no_spaces}.json", "w", encoding="UTF-8"
         ) as file:
             file.write(json.dumps(json_dict, indent=4))
+
+    def export_routines(self):
+        """
+        Export user's routines to json and exercise logs to csv in the
+        directory 'user_data/[USERNAME]/[ROUTINE_NAME]' with the name
+        '[ROUTINE_NAME].json' and '[ROUTINE_NAME].csv'
+        """
+        name_no_spaces = self.name.replace(" ", "_")
+        user_dir = f"user_data/{name_no_spaces}"
+
+        for _, routine in self.routines.items():
+            routine_name_no_spaces = routine.name.replace(" ", "_")
+            routine_dir = f"{user_dir}/{routine_name_no_spaces}"
+            if not os.path.exists(routine_dir):
+                os.mkdir(routine_dir)
+
+            routine.export_log(f"{routine_dir}/{routine_name_no_spaces}.csv")
+            routine.to_json(f"{routine_dir}/{routine_name_no_spaces}.json")
