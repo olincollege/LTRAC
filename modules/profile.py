@@ -41,7 +41,7 @@ class User:
         """
         Load user data from user json as well as all associated routine data
 
-        args:
+        Args:
             user_name: A string representing the user's name to load
         """
         name_no_spaces = user_name.replace(" ", "_")
@@ -82,7 +82,7 @@ class User:
         """
         Gain an amount of xp for completing a workout
 
-        args:
+        Args:
             gained_xp: An integer representing the amount of xp gained
         """
         self.xp_points += gained_xp
@@ -91,7 +91,7 @@ class User:
         """
         Add a routine to the user's routines
 
-        args:
+        Args:
             routine: A Routine object to be added to the user's routines
         """
         self.routines[routine.name] = routine
@@ -100,7 +100,7 @@ class User:
         """
         Set which days to workout
 
-        args:
+        Args:
             selected_days: A list of Weekday objects, representing the days
                 to workout on
         """
@@ -115,7 +115,7 @@ class User:
         Log all exercises in a routine by pulling from user inputted values in
         Flask, then gain xp
 
-        args:
+        Args:
             routine_name: A string representing the routine to log
         """
         for _, exercise in self.routines[routine_name].exercises.items():
