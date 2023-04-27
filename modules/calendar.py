@@ -31,9 +31,11 @@ def get_week():
     today = datetime.date.today()
     weekday = datetime.date.weekday(today)
     start_of_week = today - datetime.timedelta(days=weekday)
-    week_dates = []
-    for i in range(7):
-        week_date = (start_of_week + datetime.timedelta(days=i)).day
-        week_date = (Weekday(i), week_date)
-        week_dates.append(week_date)
+    week_dates = [
+        (
+            Weekday(day_number),
+            (start_of_week + datetime.timedelta(days=day_number)).day,
+        )
+        for day_number in range(7)
+    ]
     return week_dates
