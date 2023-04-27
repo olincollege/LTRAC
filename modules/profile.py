@@ -2,6 +2,7 @@
 Functions for creating new users and viewing stats in LTRAC
 """
 import json
+import os
 from dates import Weekday
 from flask import request
 
@@ -89,17 +90,24 @@ class User:
             exercise.log_weights_today(weight_list)
         self.gain_xp(100)
 
-    def to_json(self, file_path):
+    def to_json(self):
         """
-        Export user to json file
-
-        args:
-            file_path: A string representing the path to the json file
+        Export user to json file in the directory
+        'user_data/[USERNAME]/[USERNAME].json' Creates the directory if it
+        doesn't exist already
         """
         json_dict = self.__dict__.copy()
         json_dict["routines"] = list(json_dict["routines"].keys())
         json_dict["workout_days"] = {
             day.name: value for day, value in json_dict["workout_days"].items()
         }
-        with open(file_path, "w", encoding="UTF-8") as file:
+
+        name_no_spaces = self.name.replace(" ", "_")
+        dir_path = f"user_data/{name_no_spaces}"
+        if not os.path.exists(dir_path):
+            os.mkdir(dir_path)
+
+        with open(
+            f"{dir_path}/{name_no_spaces}.json", "w", encoding="UTF-8"
+        ) as file:
             file.write(json.dumps(json_dict, indent=4))
