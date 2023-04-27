@@ -4,6 +4,7 @@ Functions for creating new users and viewing stats in LTRAC
 import json
 import os
 from dates import Weekday
+from plan import Routine
 from flask import request
 
 
@@ -34,6 +35,42 @@ class User:
             Weekday.SATURDAY: False,
             Weekday.SUNDAY: False,
         }
+
+    @classmethod
+    def load_user_data(cls, user_name):
+        """
+        Load user data from user json as well as all associated routine data
+
+        args:
+            user_name: A string representing the user's name to load
+        """
+        name_no_spaces = user_name.replace(" ", "_")
+
+        # load user json
+        with open(
+            f"user_data/{name_no_spaces}/{name_no_spaces}.json",
+            "r",
+            encoding="UTF-8",
+        ) as file:
+            json_dict = json.load(file)
+
+        # set user data from json
+        user = cls(json_dict["name"], json_dict["xp_points"])
+        user.set_workout_days(
+            [
+                Weekday[day]
+                for day, value in json_dict["workout_days"].items()
+                if value
+            ]
+        )
+
+        # load routine json and csv
+        for routine_name in json_dict["routines"]:
+            routine_name_no_spaces = routine_name.replace(" ", "_")
+            path = f"user_data/{name_no_spaces}/{routine_name_no_spaces}/{routine_name_no_spaces}"
+            user.add_routine(Routine.from_json(f"{path}.json"))
+            user.routines[routine_name].load_log(f"{path}.csv")
+        return user
 
     def level(self):
         """
