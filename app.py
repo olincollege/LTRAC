@@ -4,6 +4,7 @@ website framework
 import os
 from flask import url_for, Flask, render_template, request, redirect
 from modules.plan import Exercise, Routine
+from modules.profile import User
 
 app = Flask(__name__)
 
@@ -13,7 +14,7 @@ def home():
     """
     Renders home page
     """
-    print(routines)
+    print(user.routines)
     return render_template("home.html")
 
 
@@ -24,7 +25,9 @@ def plan_page():
     Renders page for viewing routines/add new routine
     """
 
-    return render_template("plan.html", routines=routines, length=len(routines))
+    return render_template(
+        "plan.html", routines=user.routines, length=len(user.routines)
+    )
 
 
 # ------------- New routine --------------------#
@@ -43,8 +46,9 @@ def submit_routine():
     """
     Adds routine to Routine object
     """
+    # Get routine name from user input in webpage
     new_routine_name = request.args.get("routine-name")
-    routines[new_routine_name] = Routine(new_routine_name)
+    user.add_routine(Routine(new_routine_name))
 
     return redirect(url_for("add_new_exercise", routine=new_routine_name))
 
@@ -66,8 +70,10 @@ def submit_exercise(routine):
     Adds new exercise to routine
     Sends user back to add more exercises
     """
-    routines[routine].add_exercise_from_input("exercise-name", "sets")
-    routines[routine].to_json(f"user_data/routines/{routine}.json")
+    # Add new exercise entered by user in webpage
+    user.routines[routine].add_exercise_from_input("exercise-name", "sets")
+    # user.routines[routine].to_json(f"user_data/routines/{routine}.json")
+    user.export_routines()
     return redirect(url_for("add_new_exercise", routine=routine))
 
 
@@ -79,7 +85,9 @@ def logs_page():
     """
     Renders logging page
     """
-    return render_template("logs.html", routines=routines, length=len(routines))
+    return render_template(
+        "logs.html", routines=user.routines, length=len(user.routines)
+    )
 
 
 @app.route("/logs/<routine>")
@@ -87,7 +95,7 @@ def log_exercise(routine):
     """
     Renders page for user to enter weights for each exercise in a routine
     """
-    exercise_dict = routines[routine].exercises
+    exercise_dict = user.routines[routine].exercises
     return render_template(
         "routinelog.html", routine=routine, inputs=exercise_dict
     )
@@ -101,28 +109,26 @@ def submit_log(routine):
 
     if request.method == "POST":
         try:
-            routines[routine].load_log(f"user_data/logs/{routine}.csv")
+            user.routines[routine].load_log(
+                f"user_data/{username}/{routine}/{routine}.csv"
+            )
         except FileNotFoundError:
             pass
 
-        for _, exercise in routines[routine].exercises.items():
-            current_exercise = exercise.name
-            weight_list = [
-                request.form[f"{current_exercise} {i}"]
-                for i in range(int(exercise.sets))
-            ]
-            # A list that contains weights, ex: [50,55,60]
-            exercise.log_weights_today(weight_list)
-            # Save to csv
-        routines[routine].export_log(f"user_data/logs/{routine}.csv")
+        user.log_workout(routine_name=routine)
+        # Save to csv
+        user.routines[routine].export_log(
+            f"user_data/{username}/{routine}/{routine}.csv"
+        )
     return redirect(url_for("logs_page"))
 
 
 if __name__ == "__main__":
-    routines = {}
-    directory = "user_data/routines/"
-    for filename in os.listdir(directory):
-        curr_routine = Routine.from_json(f"{directory}{filename}")
-        routines[curr_routine.name] = curr_routine
-
+    username = "Grustler"
+    user = User(username)
+    user.to_json()
+    try:
+        user.load_user_data(username)
+    except FileNotFoundError:
+        pass
     app.run(debug=True)

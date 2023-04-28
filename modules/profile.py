@@ -3,9 +3,9 @@ Functions for creating new users and viewing stats in LTRAC
 """
 import json
 import os
-from dates import Weekday
-from plan import Routine
+from .plan import Routine
 from flask import request
+from .dates import Weekday
 
 
 class User:
