@@ -49,7 +49,7 @@ def submit_routine():
     # Get routine name from user input in webpage
     new_routine_name = request.args.get("routine-name")
     user.add_routine(Routine(new_routine_name))
-
+    user.to_json()
     return redirect(url_for("add_new_exercise", routine=new_routine_name))
 
 
@@ -85,6 +85,7 @@ def logs_page():
     """
     Renders logging page
     """
+    print(user.routines)
     return render_template(
         "logs.html", routines=user.routines, length=len(user.routines)
     )
@@ -96,6 +97,7 @@ def log_exercise(routine):
     Renders page for user to enter weights for each exercise in a routine
     """
     exercise_dict = user.routines[routine].exercises
+    print(exercise_dict)
     return render_template(
         "routinelog.html", routine=routine, inputs=exercise_dict
     )
@@ -125,10 +127,9 @@ def submit_log(routine):
 
 if __name__ == "__main__":
     username = "Grustler"
-    user = User(username)
-    user.to_json()
     try:
-        user.load_user_data(username)
+        user = User.load_user_data(username)
     except FileNotFoundError:
-        pass
+        user = User(username)
+    print(user.__dict__)
     app.run(debug=True)

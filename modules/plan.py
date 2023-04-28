@@ -153,7 +153,7 @@ class Routine:
         for _, ex in self.exercises.items():
             ex_df = pd.DataFrame(ex.history)
             ex_df.insert(0, "Exercise", [ex.name] * int(ex.sets))
-            ex_df.insert(1, "Set", [1, 2, 3])
+            ex_df.insert(1, "Set", list(range(1, int(ex.sets) + 1)))
             log_df = pd.concat([log_df, ex_df], ignore_index=True)
         log_df.to_csv(file_path)
 
