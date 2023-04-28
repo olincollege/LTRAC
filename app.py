@@ -1,7 +1,7 @@
 """
 website framework
 """
-import os
+
 from flask import url_for, Flask, render_template, request, redirect
 from modules.plan import Exercise, Routine
 from modules.profile import User
