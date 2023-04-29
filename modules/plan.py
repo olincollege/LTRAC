@@ -113,12 +113,26 @@ class Routine:
         name: A string representing the name of the routine
     """
 
-    exercises: Dict[str, Exercise]
-    name: str
+    _exercises: Dict[str, Exercise]
+    _name: str
 
     def __init__(self, name: str):
-        self.exercises = {}
-        self.name = name
+        self._exercises = {}
+        self._name = name
+
+    @property
+    def exercises(self):
+        """
+        Return private attribute exercises
+        """
+        return self._exercises
+
+    @property
+    def name(self):
+        """
+        Return private attribute name
+        """
+        return self._name
 
     @classmethod
     def from_input(cls, name_id: str):
