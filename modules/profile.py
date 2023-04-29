@@ -4,6 +4,7 @@ Functions for creating new users and viewing stats in LTRAC
 import json
 import os
 from flask import request
+from datetime import date, timedelta
 from .plan import Routine
 from .dates import Weekday
 
@@ -109,6 +110,40 @@ class User:
                 self.workout_days[day] = True
             else:
                 self.workout_days[day] = False
+
+    def next_workout_day(self):
+        """
+        Determine the next day after today that the user should workout based
+        on user's workout days
+
+        Returns:
+            A datetime.date object representing the next day the user has
+            planned to workout on. Returns None if no workout days are set
+        """
+        # get the day numbers of the user's workout days
+        # (monday = 0, tuesday = 1, etc)
+        workout_day_numbers = [
+            day.value for day, value in self.workout_days.items() if value
+        ]
+
+        # return None if user has no workout days set
+        if not workout_day_numbers:
+            return None
+
+        today = date.today()
+        today_number = date.weekday(today)
+
+        try:
+            # do this if there's a workout day upcoming in the week
+            next_day_delta = (
+                min(day for day in workout_day_numbers if day > today_number)
+                - today_number
+            )
+        except ValueError:
+            # do this if the next workout day is next week
+            next_day_delta = min(workout_day_numbers) - today_number + 7
+
+        return today + timedelta(days=next_day_delta)
 
     def log_workout(self, routine_name):
         """
