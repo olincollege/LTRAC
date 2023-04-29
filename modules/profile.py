@@ -27,16 +27,16 @@ class User:
 
     XP_PER_LEVEL = 1000
 
-    name: str
-    xp_points: int
-    routines: Dict[str, Routine]
-    workout_days: Dict[Weekday, bool]
+    _name: str
+    _xp_points: int
+    _routines: Dict[str, Routine]
+    _workout_days: Dict[Weekday, bool]
 
     def __init__(self, name: int, xp_points: int = 0):
-        self.name = name
-        self.xp_points = xp_points
-        self.routines = {}
-        self.workout_days = {
+        self._name = name
+        self._xp_points = xp_points
+        self._routines = {}
+        self._workout_days = {
             Weekday.MONDAY: False,
             Weekday.TUESDAY: False,
             Weekday.WEDNESDAY: False,
@@ -45,6 +45,34 @@ class User:
             Weekday.SATURDAY: False,
             Weekday.SUNDAY: False,
         }
+
+    @property
+    def name(self):
+        """
+        Return private attribute name
+        """
+        return self._name
+
+    @property
+    def xp_points(self):
+        """
+        Return private attribute xp_points
+        """
+        return self._xp_points
+
+    @property
+    def routines(self):
+        """
+        Return private attribute routines
+        """
+        return self._routines
+
+    @property
+    def workout_days(self):
+        """
+        Return private attribute workout_days
+        """
+        return self._workout_days
 
     @classmethod
     def load_user_data(cls, user_name: str):
