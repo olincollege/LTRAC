@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-flask
-=======
 Flask
->>>>>>> e004e0d890352f332f8fb824c74fccb82015e573
+pandas
+typing
