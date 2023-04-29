@@ -4,6 +4,7 @@ Classes for creating a workout routine for LTRAC
 
 import json
 from datetime import date
+from typing import Dict, List
 import pandas as pd
 from flask import request
 
@@ -20,7 +21,11 @@ class Exercise:
             will be equal to the number of sets.
     """
 
-    def __init__(self, name, sets):
+    name: str
+    sets: int
+    history: Dict[str, List[int]]
+
+    def __init__(self, name: str, sets: int):
         self.name = name
         self.sets = sets
         self.history = {}
