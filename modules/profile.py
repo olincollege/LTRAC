@@ -127,7 +127,7 @@ class User:
         Args:
             gained_xp: An integer representing the amount of xp gained
         """
-        self.xp_points += gained_xp
+        self._xp_points += gained_xp
 
     def add_routine(self, routine: Routine):
         """
