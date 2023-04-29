@@ -64,6 +64,18 @@ class Exercise:
         """
         self.log_weights(date.today().isoformat(), weights)
 
+    def personal_record(self):
+        """
+        Find the highest weight logged for the exercise
+
+        Returns:
+            An integer representing the highest weight logged. Returns None if
+            history is empty
+        """
+        if not self.history:
+            return None
+        return max(sum([weights for _, weights in self.history.items()], []))
+
 
 class Routine:
     """
