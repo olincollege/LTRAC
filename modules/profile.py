@@ -47,7 +47,7 @@ class User:
         }
 
     @classmethod
-    def load_user_data(cls, user_name):
+    def load_user_data(cls, user_name: str):
         """
         Load user data from user json as well as all associated routine data
 
@@ -85,10 +85,13 @@ class User:
     def level(self):
         """
         Calculate the level of the user
+
+        Returns:
+            An integer representing the user's level
         """
         return self.xp_points // self.XP_PER_LEVEL
 
-    def gain_xp(self, gained_xp):
+    def gain_xp(self, gained_xp: int):
         """
         Gain an amount of xp for completing a workout
 
@@ -97,7 +100,7 @@ class User:
         """
         self.xp_points += gained_xp
 
-    def add_routine(self, routine):
+    def add_routine(self, routine: Routine):
         """
         Add a routine to the user's routines
 
@@ -106,7 +109,7 @@ class User:
         """
         self.routines[routine.name] = routine
 
-    def set_workout_days(self, selected_days):
+    def set_workout_days(self, selected_days: List[Weekday]):
         """
         Set which days to workout
 
@@ -154,7 +157,7 @@ class User:
 
         return today + timedelta(days=next_day_delta)
 
-    def log_workout(self, routine_name):
+    def log_workout(self, routine_name: str):
         """
         Log all exercises in a routine by pulling from user inputted values in
         Flask, then gain xp
