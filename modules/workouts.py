@@ -155,9 +155,9 @@ class Routine:
         """
         with open(file_path, "r", encoding="UTF-8") as file:
             json_dict = json.load(file)
-        routine = Routine(json_dict["name"])
-        for key, item in json_dict["exercises"].items():
-            exercise = Exercise(item["name"], item["sets"])
+        routine = Routine(json_dict["_name"])
+        for key, item in json_dict["_exercises"].items():
+            exercise = Exercise(item["_name"], item["_sets"])
             routine.exercises[key] = exercise
         return routine
 
@@ -191,8 +191,8 @@ class Routine:
             file_path: A string representing the path to the json file
         """
         json_dict = self.__dict__.copy()
-        json_dict["exercises"] = {
-            key: ex.__dict__ for key, ex in json_dict["exercises"].items()
+        json_dict["_exercises"] = {
+            key: ex.__dict__ for key, ex in json_dict["_exercises"].items()
         }
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json.dumps(json_dict, indent=4))
