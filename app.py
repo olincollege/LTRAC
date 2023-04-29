@@ -19,7 +19,53 @@ def home():
     return render_template("home.html")
 
 
+# --------Profile Page---------#
+
+
+@app.route("/profile")
+def profile():
+    """
+    Renders profile page
+    """
+    profile_pic = "img/profile_picture.jpg"
+    return render_template(
+        "profile.html",
+        username=user.name,
+        photo=profile_pic,
+        level=user.level(),
+    )
+
+
+@app.route("/edit-profile")
+def edit_profile():
+    """
+    Renders page where user can upload a profile picture
+    """
+    return render_template("editprofile.html")
+
+
+@app.route("/upload-successful", methods=["POST"])
+def photo_uploaded():
+    """
+    Uploads photo into system
+    """
+    uploaded_files = request.files["file"]
+    uploaded_files.save("static/img/profile_picture.jpg")
+    return redirect(url_for("profile"))
+
+
+# @app.route("/username-changed", methods=["GET"])
+# def username_changed():
+#     """
+#     Updates username to new username the user inputted
+#     """
+#     global username
+#     username = request.args.get("new_username")
+#     return redirect(url_for("profile"))
+
 # ---------Everything that is linked with the Plan page--------- #
+
+
 @app.route("/plan")
 def plan_page():
     """
