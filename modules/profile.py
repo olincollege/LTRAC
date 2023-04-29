@@ -3,6 +3,8 @@ Functions for creating new users and viewing stats in LTRAC
 """
 import json
 import os
+from datetime import date, timedelta
+from typing import Dict, List
 from flask import request
 from .plan import Routine
 from .dates import Weekday
@@ -16,17 +18,25 @@ class User:
         name: A string representing the name of the user
         xp_points: An integer representing the amount of experience points
             the user has
-        routines: A dictionary of routine objects representing the user's
-            workout routines
+        routines: A dictionary mapping the string of the routine name to the
+            corresponding routine object, representing the user's workout
+            routines
+        workout_days: A dictionary mapping Weekday objects to booleans,
+            representing the days the user plans to workout
     """
 
     XP_PER_LEVEL = 1000
 
-    def __init__(self, name, xp_points=0):
-        self.name = name
-        self.xp_points = xp_points
-        self.routines = {}
-        self.workout_days = {
+    _name: str
+    _xp_points: int
+    _routines: Dict[str, Routine]
+    _workout_days: Dict[Weekday, bool]
+
+    def __init__(self, name: int, xp_points: int = 0):
+        self._name = name
+        self._xp_points = xp_points
+        self._routines = {}
+        self._workout_days = {
             Weekday.MONDAY: False,
             Weekday.TUESDAY: False,
             Weekday.WEDNESDAY: False,
@@ -36,8 +46,36 @@ class User:
             Weekday.SUNDAY: False,
         }
 
+    @property
+    def name(self):
+        """
+        Return private attribute name
+        """
+        return self._name
+
+    @property
+    def xp_points(self):
+        """
+        Return private attribute xp_points
+        """
+        return self._xp_points
+
+    @property
+    def routines(self):
+        """
+        Return private attribute routines
+        """
+        return self._routines
+
+    @property
+    def workout_days(self):
+        """
+        Return private attribute workout_days
+        """
+        return self._workout_days
+
     @classmethod
-    def load_user_data(cls, user_name):
+    def load_user_data(cls, user_name: str):
         """
         Load user data from user json as well as all associated routine data
 
@@ -67,6 +105,7 @@ class User:
         # load routine json and csv
         for routine_name in json_dict["routines"]:
             routine_name_no_spaces = routine_name.replace(" ", "_")
+            # pylint: disable=line-too-long
             path = f"user_data/{name_no_spaces}/{routine_name_no_spaces}/{routine_name_no_spaces}"
             user.add_routine(Routine.from_json(f"{path}.json"))
             user.routines[routine_name].load_log(f"{path}.csv")
@@ -75,10 +114,13 @@ class User:
     def level(self):
         """
         Calculate the level of the user
+
+        Returns:
+            An integer representing the user's level
         """
         return self.xp_points // self.XP_PER_LEVEL
 
-    def gain_xp(self, gained_xp):
+    def gain_xp(self, gained_xp: int):
         """
         Gain an amount of xp for completing a workout
 
@@ -87,7 +129,7 @@ class User:
         """
         self.xp_points += gained_xp
 
-    def add_routine(self, routine):
+    def add_routine(self, routine: Routine):
         """
         Add a routine to the user's routines
 
@@ -96,7 +138,7 @@ class User:
         """
         self.routines[routine.name] = routine
 
-    def set_workout_days(self, selected_days):
+    def set_workout_days(self, selected_days: List[Weekday]):
         """
         Set which days to workout
 
@@ -110,7 +152,41 @@ class User:
             else:
                 self.workout_days[day] = False
 
-    def log_workout(self, routine_name):
+    def next_workout_day(self):
+        """
+        Determine the next day after today that the user should workout based
+        on user's workout days
+
+        Returns:
+            A datetime.date object representing the next day the user has
+            planned to workout on. Returns None if no workout days are set
+        """
+        # get the day numbers of the user's workout days
+        # (monday = 0, tuesday = 1, etc)
+        workout_day_numbers = [
+            day.value for day, value in self.workout_days.items() if value
+        ]
+
+        # return None if user has no workout days set
+        if not workout_day_numbers:
+            return None
+
+        today = date.today()
+        today_number = date.weekday(today)
+
+        try:
+            # do this if there's a workout day upcoming in the week
+            next_day_delta = (
+                min(day for day in workout_day_numbers if day > today_number)
+                - today_number
+            )
+        except ValueError:
+            # do this if the next workout day is next week
+            next_day_delta = min(workout_day_numbers) - today_number + 7
+
+        return today + timedelta(days=next_day_delta)
+
+    def log_workout(self, routine_name: str):
         """
         Log all exercises in a routine by pulling from user inputted values in
         Flask, then gain xp

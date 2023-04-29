@@ -4,6 +4,7 @@ Classes for creating a workout routine for LTRAC
 
 import json
 from datetime import date
+from typing import Dict, List
 import pandas as pd
 from flask import request
 
@@ -20,13 +21,38 @@ class Exercise:
             will be equal to the number of sets.
     """
 
-    def __init__(self, name, sets):
-        self.name = name
-        self.sets = sets
-        self.history = {}
+    _name: str
+    _sets: int
+    _history: Dict[str, List[int]]
+
+    def __init__(self, name: str, sets: int):
+        self._name = name
+        self._sets = sets
+        self._history = {}
+
+    @property
+    def name(self):
+        """
+        Return private attribute name
+        """
+        return self._name
+
+    @property
+    def sets(self):
+        """
+        Return private attribute sets
+        """
+        return self._sets
+
+    @property
+    def history(self):
+        """
+        Return private attribute history
+        """
+        return self._history
 
     @classmethod
-    def from_input(cls, name_id, sets_id):
+    def from_input(cls, name_id: str, sets_id: str):
         """
         Create exercise from Flask input
 
@@ -41,7 +67,7 @@ class Exercise:
         """
         return cls(request.args.get(name_id), request.args.get(sets_id))
 
-    def log_weights(self, date_iso, weights):
+    def log_weights(self, date_iso: str, weights: str):
         """
         Log weights used for exercise for today
 
@@ -53,7 +79,7 @@ class Exercise:
         """
         self.history[date_iso] = weights
 
-    def log_weights_today(self, weights):
+    def log_weights_today(self, weights: List[int]):
         """
         Log weights used for exercise for today
 
@@ -63,6 +89,18 @@ class Exercise:
                 for the exercise.
         """
         self.log_weights(date.today().isoformat(), weights)
+
+    def personal_record(self):
+        """
+        Find the highest weight logged for the exercise
+
+        Returns:
+            An integer representing the highest weight logged. Returns None if
+            history is empty
+        """
+        if not self.history:
+            return None
+        return max(sum([weights for _, weights in self.history.items()], []))
 
 
 class Routine:
@@ -75,12 +113,29 @@ class Routine:
         name: A string representing the name of the routine
     """
 
-    def __init__(self, name):
-        self.exercises = {}
-        self.name = name
+    _exercises: Dict[str, Exercise]
+    _name: str
+
+    def __init__(self, name: str):
+        self._exercises = {}
+        self._name = name
+
+    @property
+    def exercises(self):
+        """
+        Return private attribute exercises
+        """
+        return self._exercises
+
+    @property
+    def name(self):
+        """
+        Return private attribute name
+        """
+        return self._name
 
     @classmethod
-    def from_input(cls, name_id):
+    def from_input(cls, name_id: str):
         """
         Create Routine from Flask input
 
@@ -91,7 +146,7 @@ class Routine:
         return cls(request.args.get(name_id))
 
     @classmethod
-    def from_json(cls, file_path):
+    def from_json(cls, file_path: str):
         """
         Create routine from json file
 
@@ -106,7 +161,7 @@ class Routine:
             routine.exercises[key] = exercise
         return routine
 
-    def add_exercise(self, exercise):
+    def add_exercise(self, exercise: Exercise):
         """
         Add an exercise to the routine
 
@@ -115,7 +170,7 @@ class Routine:
         """
         self.exercises[exercise.name] = exercise
 
-    def add_exercise_from_input(self, name_id, sets_id):
+    def add_exercise_from_input(self, name_id: str, sets_id: str):
         """
         Add an exercise to the routine from user input through the website
 
@@ -128,7 +183,7 @@ class Routine:
         exercise = Exercise.from_input(name_id, sets_id)
         self.add_exercise(exercise)
 
-    def to_json(self, file_path):
+    def to_json(self, file_path: str):
         """
         Export routine to json file
 
@@ -142,7 +197,7 @@ class Routine:
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json.dumps(json_dict, indent=4))
 
-    def export_log(self, file_path):
+    def export_log(self, file_path: str):
         """
         Export history of each exercise to single csv
 
@@ -157,7 +212,7 @@ class Routine:
             log_df = pd.concat([log_df, ex_df], ignore_index=True)
         log_df.to_csv(file_path)
 
-    def load_log(self, file_path):
+    def load_log(self, file_path: str):
         """
         Load history of each exercise from csv. Assumes the routine is already
         initialized with matching exercises through json.
@@ -172,6 +227,3 @@ class Routine:
             for day in days:
                 if not all(ex_df[day].isna()):
                     ex.log_weights(day, list(ex_df[day]))
-
-    def __repr__(self):
-        return " ".join([ex.__repr__() for ex in self.exercises.items()])
