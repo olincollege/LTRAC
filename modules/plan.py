@@ -31,7 +31,7 @@ class Exercise:
         self.history = {}
 
     @classmethod
-    def from_input(cls, name_id, sets_id):
+    def from_input(cls, name_id: str, sets_id: str):
         """
         Create exercise from Flask input
 
@@ -46,7 +46,7 @@ class Exercise:
         """
         return cls(request.args.get(name_id), request.args.get(sets_id))
 
-    def log_weights(self, date_iso, weights):
+    def log_weights(self, date_iso: str, weights: str):
         """
         Log weights used for exercise for today
 
@@ -58,7 +58,7 @@ class Exercise:
         """
         self.history[date_iso] = weights
 
-    def log_weights_today(self, weights):
+    def log_weights_today(self, weights: List[int]):
         """
         Log weights used for exercise for today
 
