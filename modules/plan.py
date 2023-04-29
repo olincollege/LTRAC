@@ -92,7 +92,10 @@ class Routine:
         name: A string representing the name of the routine
     """
 
-    def __init__(self, name):
+    exercises: Dict[str, Exercise]
+    name: str
+
+    def __init__(self, name: str):
         self.exercises = {}
         self.name = name
 
