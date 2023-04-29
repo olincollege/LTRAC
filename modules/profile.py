@@ -93,17 +93,17 @@ class User:
             json_dict = json.load(file)
 
         # set user data from json
-        user = cls(json_dict["name"], json_dict["xp_points"])
+        user = cls(json_dict["_name"], json_dict["_xp_points"])
         user.set_workout_days(
             [
                 Weekday[day]
-                for day, value in json_dict["workout_days"].items()
+                for day, value in json_dict["_workout_days"].items()
                 if value
             ]
         )
 
         # load routine json and csv
-        for routine_name in json_dict["routines"]:
+        for routine_name in json_dict["_routines"]:
             routine_name_no_spaces = routine_name.replace(" ", "_")
             # pylint: disable=line-too-long
             path = f"user_data/{name_no_spaces}/{routine_name_no_spaces}/{routine_name_no_spaces}"
@@ -210,9 +210,9 @@ class User:
         already
         """
         json_dict = self.__dict__.copy()
-        json_dict["routines"] = list(json_dict["routines"].keys())
-        json_dict["workout_days"] = {
-            day.name: value for day, value in json_dict["workout_days"].items()
+        json_dict["_routines"] = list(json_dict["_routines"].keys())
+        json_dict["_workout_days"] = {
+            day.name: value for day, value in json_dict["_workout_days"].items()
         }
 
         name_no_spaces = self.name.replace(" ", "_")
