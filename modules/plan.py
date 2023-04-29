@@ -21,9 +21,9 @@ class Exercise:
             will be equal to the number of sets.
     """
 
-    name: str
-    sets: int
-    history: Dict[str, List[int]]
+    _name: str
+    _sets: int
+    _history: Dict[str, List[int]]
 
     def __init__(self, name: str, sets: int):
         self._name = name
