@@ -105,6 +105,7 @@ class User:
         # load routine json and csv
         for routine_name in json_dict["routines"]:
             routine_name_no_spaces = routine_name.replace(" ", "_")
+            # pylint: disable=line-too-long
             path = f"user_data/{name_no_spaces}/{routine_name_no_spaces}/{routine_name_no_spaces}"
             user.add_routine(Routine.from_json(f"{path}.json"))
             user.routines[routine_name].load_log(f"{path}.csv")
