@@ -6,7 +6,7 @@ import os
 from datetime import date, timedelta
 from typing import Dict, List
 from flask import request
-from .plan import Routine
+from .workouts import Routine
 from .dates import Weekday
 
 
