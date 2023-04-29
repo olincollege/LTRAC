@@ -4,6 +4,7 @@ Functions for creating new users and viewing stats in LTRAC
 import json
 import os
 from datetime import date, timedelta
+from typing import Dict, List
 from flask import request
 from .plan import Routine
 from .dates import Weekday
@@ -17,13 +18,21 @@ class User:
         name: A string representing the name of the user
         xp_points: An integer representing the amount of experience points
             the user has
-        routines: A dictionary of routine objects representing the user's
-            workout routines
+        routines: A dictionary mapping the string of the routine name to the
+            corresponding routine object, representing the user's workout
+            routines
+        workout_days: A dictionary mapping Weekday objects to booleans,
+            representing the days the user plans to workout
     """
 
     XP_PER_LEVEL = 1000
 
-    def __init__(self, name, xp_points=0):
+    name: str
+    xp_points: int
+    routines: Dict[str, Routine]
+    workout_days: Dict[Weekday, bool]
+
+    def __init__(self, name: int, xp_points: int = 0):
         self.name = name
         self.xp_points = xp_points
         self.routines = {}
