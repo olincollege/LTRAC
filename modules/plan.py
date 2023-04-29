@@ -26,9 +26,30 @@ class Exercise:
     history: Dict[str, List[int]]
 
     def __init__(self, name: str, sets: int):
-        self.name = name
-        self.sets = sets
-        self.history = {}
+        self._name = name
+        self._sets = sets
+        self._history = {}
+
+    @property
+    def name(self):
+        """
+        Return private attribute name
+        """
+        return self._name
+
+    @property
+    def sets(self):
+        """
+        Return private attribute sets
+        """
+        return self._sets
+
+    @property
+    def history(self):
+        """
+        Return private attribute history
+        """
+        return self._history
 
     @classmethod
     def from_input(cls, name_id: str, sets_id: str):
