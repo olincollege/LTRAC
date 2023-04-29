@@ -100,7 +100,7 @@ class Routine:
         self.name = name
 
     @classmethod
-    def from_input(cls, name_id):
+    def from_input(cls, name_id: str):
         """
         Create Routine from Flask input
 
@@ -111,7 +111,7 @@ class Routine:
         return cls(request.args.get(name_id))
 
     @classmethod
-    def from_json(cls, file_path):
+    def from_json(cls, file_path: str):
         """
         Create routine from json file
 
@@ -126,7 +126,7 @@ class Routine:
             routine.exercises[key] = exercise
         return routine
 
-    def add_exercise(self, exercise):
+    def add_exercise(self, exercise: Exercise):
         """
         Add an exercise to the routine
 
@@ -135,7 +135,7 @@ class Routine:
         """
         self.exercises[exercise.name] = exercise
 
-    def add_exercise_from_input(self, name_id, sets_id):
+    def add_exercise_from_input(self, name_id: str, sets_id: str):
         """
         Add an exercise to the routine from user input through the website
 
@@ -148,7 +148,7 @@ class Routine:
         exercise = Exercise.from_input(name_id, sets_id)
         self.add_exercise(exercise)
 
-    def to_json(self, file_path):
+    def to_json(self, file_path: str):
         """
         Export routine to json file
 
@@ -162,7 +162,7 @@ class Routine:
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json.dumps(json_dict, indent=4))
 
-    def export_log(self, file_path):
+    def export_log(self, file_path: str):
         """
         Export history of each exercise to single csv
 
@@ -177,7 +177,7 @@ class Routine:
             log_df = pd.concat([log_df, ex_df], ignore_index=True)
         log_df.to_csv(file_path)
 
-    def load_log(self, file_path):
+    def load_log(self, file_path: str):
         """
         Load history of each exercise from csv. Assumes the routine is already
         initialized with matching exercises through json.
