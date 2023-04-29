@@ -24,7 +24,7 @@
         cursor: pointer;
     }
 </style>
-<form method="post" action="{{url_for('submit_log',routine=routine)}}">
+<form method="post" action="{{url_for('submit_log',routine=routine,day=day)}}">
     {% for _,exercise in inputs.items() %}
             <h2>{{exercise.name}}</h2>
             {% for set in range(exercise.sets|int)%}

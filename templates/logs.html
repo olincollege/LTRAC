@@ -42,14 +42,10 @@
         font-size: 30px;
     }
 
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 20px;
-    }
+
 </style>
 
-<h1>My Routines</h1>
+<h1>Select a Routine for {{day}}</h1>
 <a class="button" href="/add-routine">Create new routine</a><br><br>
 
 <div class="routines">
@@ -57,7 +53,7 @@
     {%for _,routine in routines.items() %}
         <div class="routine-block">
             
-            <a href="{{url_for('log_exercise',routine=routine.name)}}"><h1 class="routine-name">
+            <a href="{{url_for('log_exercise',day=day,routine=routine.name)}}"><h1 class="routine-name">
                 {{routine.name}}
             </h1>
             </a>

@@ -5,6 +5,7 @@ website framework
 from flask import url_for, Flask, render_template, request, redirect
 from modules.plan import Exercise, Routine
 from modules.profile import User
+from modules.dates import Weekday
 
 app = Flask(__name__)
 
@@ -80,31 +81,31 @@ def submit_exercise(routine):
 # ---------------------Logging-------------------- #
 
 
-@app.route("/logs")
-def logs_page():
+@app.route("/logs/<day>")
+def logs_page(day):
     """
     Renders logging page
     """
     print(user.routines)
     return render_template(
-        "logs.html", routines=user.routines, length=len(user.routines)
+        "logs.html", day=day, routines=user.routines, length=len(user.routines)
     )
 
 
-@app.route("/logs/<routine>")
-def log_exercise(routine):
+@app.route("/logs/<day>/<routine>")
+def log_exercise(day, routine):
     """
     Renders page for user to enter weights for each exercise in a routine
     """
     exercise_dict = user.routines[routine].exercises
     print(exercise_dict)
     return render_template(
-        "routinelog.html", routine=routine, inputs=exercise_dict
+        "routinelog.html", day=day, routine=routine, inputs=exercise_dict
     )
 
 
-@app.route("/submit-log/<routine>", methods=["GET", "POST"])
-def submit_log(routine):
+@app.route("/submit-log/<day>/<routine>", methods=["GET", "POST"])
+def submit_log(routine, day):
     """
     Submit weights user entered
     """
@@ -118,11 +119,47 @@ def submit_log(routine):
             pass
 
         user.log_workout(routine_name=routine)
+        user.to_json()
         # Save to csv
         user.routines[routine].export_log(
             f"user_data/{username}/{routine}/{routine}.csv"
         )
-    return redirect(url_for("logs_page"))
+    return redirect(url_for("logs_page", day=day))
+
+
+# -------------------Calendar----------------------#
+@app.route("/calendar")
+def calendar():
+    """
+    Renders Calendar page
+    """
+    days = [
+        day.name.capitalize()
+        for day, y_n in user.workout_days.items()
+        if y_n == 1
+    ]
+    return render_template("calendar.html", workout_days=days, length=len(days))
+
+
+@app.route("/select-days")
+def select_days():
+    """
+    Renders page where user selects workout days
+    """
+
+    return render_template("selectdays.html")
+
+
+@app.route("/submit-days", methods=["GET", "POST"])
+def submit_days():
+    """
+    Fetch user input from /select-days
+    """
+    if request.method == "POST":
+        days = request.form.getlist("day")
+        user.set_workout_days([Weekday[day] for day in days])
+        user.to_json()
+    return redirect(url_for("select_days"))
 
 
 if __name__ == "__main__":
