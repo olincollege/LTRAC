@@ -1,0 +1,68 @@
+{% extends 'base.html'%}
+
+{% block main %}
+<style>
+    .button {
+        background-color: #08712b;
+        text-decoration: none;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .routines{
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .routine-block{
+        margin-right: 60px;
+        margin-top:30px;
+    }
+    
+    a{
+        text-decoration: none;
+    }
+    
+    .routine-name{
+        font-size:30px;
+        margin-left:38px;
+        margin-right: 60px;
+    } 
+
+    .routine-entry{
+        margin-bottom: 10px;
+    }
+
+    .no-routine-msg{
+        font-size: 30px;
+    }
+
+
+</style>
+
+<h1>Select a Routine for {{day}}</h1>
+<a class="button" href="/add-routine">Create new routine</a><br><br>
+
+<div class="routines">
+{%if length != 0%}
+    {%for _,routine in routines.items() %}
+        <div class="routine-block">
+            
+            <a href="{{url_for('log_exercise',day=day,routine=routine.name)}}"><h1 class="routine-name">
+                {{routine.name}}
+            </h1>
+            </a>
+           
+        </div>    
+    {%endfor%}
+{% else %}
+    <h1 class="no-routine-msg">You currently have no routines to log. Create a routine first</h1>
+{% endif %}
+{%endblock%}
+
+
