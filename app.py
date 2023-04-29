@@ -2,21 +2,47 @@
 website framework
 """
 
-from flask import url_for, Flask, render_template, request, redirect
+from flask import url_for, Flask, render_template, request, redirect, session
+from pathlib import Path
 from modules.plan import Exercise, Routine
 from modules.profile import User
 from modules.dates import Weekday
 
 app = Flask(__name__)
 
-# --------Home Page ---------#
+
+# ----------Login Page-----------#
 @app.route("/")
+def login():
+    """
+    Login page
+    """
+    return render_template("login.html")
+
+
+@app.route("/auth", methods=["POST"])
+def authenticate():
+    """
+    Check if user exists in system, create new user if not found
+    """
+    username = request.form["username"]
+    global user
+    try:
+        user = User.load_user_data(username)
+    except FileNotFoundError:
+        user = User(username)
+
+    return redirect(url_for("home", name=user.name))
+
+
+# --------Home Page ---------#
+@app.route("/home")
 def home():
     """
     Renders home page
     """
-    print(user.routines)
-    return render_template("home.html")
+
+    return render_template("home.html", name=user.name)
 
 
 # --------Profile Page---------#
@@ -27,7 +53,13 @@ def profile():
     """
     Renders profile page
     """
-    profile_pic = "img/profile_picture.jpg"
+
+    pic_path = Path(f"static/img/{user.name}_profile_picture.jpg")
+    if pic_path.is_file():
+        profile_pic = f"img/{user.name}_profile_picture.jpg"
+    else:
+        profile_pic = "img/default_profile.jpg"
+
     return render_template(
         "profile.html",
         username=user.name,
@@ -50,7 +82,7 @@ def photo_uploaded():
     Uploads photo into system
     """
     uploaded_files = request.files["file"]
-    uploaded_files.save("static/img/profile_picture.jpg")
+    uploaded_files.save(f"static/img/{user.name}_profile_picture.jpg")
     return redirect(url_for("profile"))
 
 
@@ -119,7 +151,6 @@ def submit_exercise(routine):
     """
     # Add new exercise entered by user in webpage
     user.routines[routine].add_exercise_from_input("exercise-name", "sets")
-    # user.routines[routine].to_json(f"user_data/routines/{routine}.json")
     user.export_routines()
     return redirect(url_for("add_new_exercise", routine=routine))
 
@@ -159,7 +190,7 @@ def submit_log(routine, day):
     if request.method == "POST":
         try:
             user.routines[routine].load_log(
-                f"user_data/{username}/{routine}/{routine}.csv"
+                f"user_data/{user.name}/{routine}/{routine}.csv"
             )
         except FileNotFoundError:
             pass
@@ -168,7 +199,7 @@ def submit_log(routine, day):
         user.to_json()
         # Save to csv
         user.routines[routine].export_log(
-            f"user_data/{username}/{routine}/{routine}.csv"
+            f"user_data/{user.name}/{routine}/{routine}.csv"
         )
     return redirect(url_for("logs_page", day=day))
 
@@ -205,14 +236,8 @@ def submit_days():
         days = request.form.getlist("day")
         user.set_workout_days([Weekday[day] for day in days])
         user.to_json()
-    return redirect(url_for("select_days"))
+    return redirect(url_for("calendar"))
 
 
 if __name__ == "__main__":
-    username = "Grustler"
-    try:
-        user = User.load_user_data(username)
-    except FileNotFoundError:
-        user = User(username)
-    print(user.__dict__)
     app.run(debug=True)
