@@ -76,7 +76,15 @@ class Exercise:
             weights: A list of integers representing the weights used in the
                 exercise. Length of list should be equal to the number of sets
                 for the exercise.
+
+        Raises:
+            ValueError: Inputted number of weights does not match number of
+                sets for the exercise
         """
+        if len(weights) != self.sets:
+            raise ValueError(
+                "Number of weights logged does not match number of sets"
+            )
         self.history[date_iso] = weights
 
     def log_weights_today(self, weights: List[int]):
