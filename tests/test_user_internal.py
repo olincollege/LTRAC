@@ -102,3 +102,19 @@ def test_set_workout_days(sample_user: User, days: List[Weekday]):
     assert {
         day for day, value in sample_user.workout_days.items() if value
     } == set(days)
+
+
+def test_set_workout_days_overrides(sample_user: User):
+    """
+    Test that User.set_workout_days overrides previous workout days
+
+    Args:
+        sample_user: The User object to use
+    """
+    sample_user.set_workout_days(
+        [Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY]
+    )
+    sample_user.set_workout_days([Weekday.THURSDAY])
+    assert {
+        day for day, value in sample_user.workout_days.items() if value
+    } == set([Weekday.THURSDAY])
