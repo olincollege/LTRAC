@@ -30,6 +30,9 @@ class Exercise:
         self._sets = sets
         self._history = {}
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
     @property
     def name(self):
         """
@@ -127,6 +130,9 @@ class Routine:
     def __init__(self, name: str):
         self._exercises = {}
         self._name = name
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
 
     @property
     def exercises(self):
