@@ -21,6 +21,15 @@ def change_test_dir(request, monkeypatch):
     monkeypatch.chdir(request.fspath.dirname)
 
 
+@pytest.fixture(autouse=True)
+def create_user_data_dir():
+    """
+    Create user_data directory if it doesn't exist
+    """
+    if not os.path.exists("user_data"):
+        os.mkdir("user_data")
+
+
 @pytest.fixture
 def sample_user():
     """
