@@ -4,7 +4,7 @@ website framework
 
 from flask import url_for, Flask, render_template, request, redirect, session
 from pathlib import Path
-from modules.plan import Exercise, Routine
+from modules.workouts import Exercise, Routine
 from modules.profile import User
 from modules.dates import Weekday
 
