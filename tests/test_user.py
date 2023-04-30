@@ -12,6 +12,8 @@ sys.path.append("./")
 
 # pylint: disable=import-error, wrong-import-position
 from modules.profile import User
+from modules.workouts import Routine
+from modules.dates import Weekday
 
 
 @pytest.fixture(autouse=True)
@@ -70,18 +72,50 @@ def test_to_json_correctness(sample_user: User):
     with open(
         "user_data/username/username.json", encoding="UTF-8"
     ) as created_json, open(
-        "target_data/username/username.json", encoding="UTF-8"
+        "static_data/username/username.json", encoding="UTF-8"
     ) as target_json:
         assert json.load(created_json) == json.load(target_json)
 
 
-def test_load_blank_user(sample_user: User):
+load_user_cases = [
+    ("username", {}),
+    ("user_with_xp", {"xp_points": 1000}),
+    (
+        "user_with_workout_days",
+        {"workout_days": [Weekday.MONDAY, Weekday.THURSDAY, Weekday.FRIDAY]},
+    ),
+    ("user_with_routines", {"routines": ["routine1", "routine2"]}),
+]
+
+
+@pytest.mark.parametrize("name,attr_dict", load_user_cases)
+def test_load_user(name: str, attr_dict: dict):
     """
-    Test that User.load_user_data loads properly
+    Test that User.load_user_data() loads correctly by comparing the loaded
+    user to a user constructed through attr_dict
 
     Args:
-        sample_user: The User object to use
+        name: A string representing the name of the user to load
+        attr_dict: A dictionary to construct the solution user. Has three
+            possible keys: xp_points, workout_days, and routines
+                - xp_points maps to an integer representing how much xp the
+                    user has
+                - workout_days maps to a list of Weekday objects, representing
+                    the days the user plans to workout
+                - routines maps to a list of strings, representing the names of
+                    the user's routines
     """
-    loaded_user = User.load_user_data("username", directory="target_data")
-    target_user = sample_user
-    assert loaded_user.__dict__ == target_user.__dict__
+    target_user = User(name)
+    if attr_dict.get("xp_points"):
+        target_user.gain_xp(attr_dict["xp_points"])
+    if attr_dict.get("workout_days"):
+        target_user.set_workout_days(attr_dict["workout_days"])
+    if attr_dict.get("routines"):
+        for routine in attr_dict["routines"]:
+            target_user.add_routine(
+                Routine.from_json(
+                    f"static_data/{name}/{routine}/{routine}.json"
+                )
+            )
+    loaded_user = User.load_user_data(name, directory="static_data")
+    assert loaded_user == target_user
