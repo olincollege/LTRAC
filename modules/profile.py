@@ -84,6 +84,9 @@ class User:
 
         Args:
             user_name: A string representing the user's name to load
+            directory: A string representing the base directory of the user's
+                data, for example the user's json file will be located at
+                [directory]/[user_name]/[user_name].json
         """
         name_no_spaces = user_name.replace(" ", "_")
 
