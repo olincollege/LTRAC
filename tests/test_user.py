@@ -72,7 +72,7 @@ def test_to_json_correctness(sample_user: User):
     with open(
         "user_data/username/username.json", encoding="UTF-8"
     ) as created_json, open(
-        "static_data/username/username.json", encoding="UTF-8"
+        "static_data/users/username/username.json", encoding="UTF-8"
     ) as target_json:
         assert json.load(created_json) == json.load(target_json)
 
@@ -114,8 +114,8 @@ def test_load_user(name: str, attr_dict: dict):
         for routine in attr_dict["routines"]:
             target_user.add_routine(
                 Routine.from_json(
-                    f"static_data/{name}/{routine}/{routine}.json"
+                    f"static_data/users/{name}/{routine}/{routine}.json"
                 )
             )
-    loaded_user = User.load_user_data(name, directory="static_data")
+    loaded_user = User.load_user_data(name, directory="static_data/users")
     assert loaded_user == target_user
