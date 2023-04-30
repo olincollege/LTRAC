@@ -8,11 +8,12 @@ import json
 import shutil
 import pytest
 
+
 sys.path.append("./")
 
 # pylint: disable=import-error, wrong-import-position
 from modules.profile import User
-from modules.workouts import Routine
+from modules.workouts import Routine, Exercise
 from modules.dates import Weekday
 
 
@@ -62,7 +63,7 @@ def test_to_json_creates_path(sample_user: User):
 
 def test_to_json_correctness(sample_user: User):
     """
-    Test that User.to_json creates a json file that matchs the expected file
+    Test that User.to_json creates a json file that matches the expected file
     structure
 
     Args:
@@ -86,6 +87,41 @@ load_user_cases = [
     ),
     ("user_with_routines", {"routines": ["routine1", "routine2"]}),
 ]
+
+
+def test_export_routines(sample_user: User):
+    """
+    Test that User.export_routines creates a routine directory, json, and csv
+    that matches the expected structure
+
+    Args:
+        sample_user: The User object to use
+    """
+    user = sample_user
+    user.add_routine(Routine("routine1"))
+    user.routines["routine1"].add_exercise(Exercise("exercise1", 2))
+    user.routines["routine1"].add_exercise(Exercise("exercise2", 2))
+    user.routines["routine1"].exercises["exercise1"].log_weights(
+        "2023-04-30", [1, 2]
+    )
+    user.routines["routine1"].exercises["exercise2"].log_weights(
+        "2023-04-30", [1, 2]
+    )
+    user.export_routines()
+
+    with open(
+        "user_data/username/routine1/routine1.json", "r", encoding="UTF-8"
+    ) as created_json, open(
+        "user_data/username/routine1/routine1.csv", "r", encoding="UTF-8"
+    ) as created_csv, open(
+        "static_data/routines/routine1/routine1.json", "r", encoding="UTF-8"
+    ) as target_json, open(
+        "static_data/routines/routine1/routine1.csv", "r", encoding="UTF-8"
+    ) as target_csv:
+        assert (
+            json.load(created_json) == json.load(target_json)
+            and created_csv.readlines() == target_csv.readlines()
+        )
 
 
 @pytest.mark.parametrize("name,attr_dict", load_user_cases)
