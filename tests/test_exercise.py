@@ -33,3 +33,15 @@ def test_weights_get_logged(sample_exercise: Exercise):
     exercise = sample_exercise
     exercise.log_weights_today([1, 2, 3])
     assert exercise.history.popitem()[1] == [1, 2, 3]
+
+
+def test_wrong_number_of_sets(sample_exercise: Exercise):
+    """
+    Test that logging the wrong number of sets raises an error
+
+    Args:
+        sample_exercise: The Exercise object to use
+    """
+    exercise = sample_exercise
+    with pytest.raises(ValueError):
+        exercise.log_weights_today([1, 2])
