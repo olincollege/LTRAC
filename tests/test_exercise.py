@@ -2,6 +2,7 @@
 Unit tests for Exercise class
 """
 
+from datetime import date, timedelta
 import sys
 import pytest
 
@@ -45,6 +46,22 @@ def test_wrong_number_of_sets(sample_exercise: Exercise):
     exercise = sample_exercise
     with pytest.raises(ValueError):
         exercise.log_weights_today([1, 2])
+
+
+def test_pr(sample_exercise: Exercise):
+    """
+    Test that personal_record returns the largest weight recorded in the
+    exercise's history
+
+    Args:
+        sample_exercise: The Exercise object to use
+    """
+    exercise = sample_exercise
+    exercise.log_weights(
+        (date.today() - timedelta(days=1)).isoformat(), [10, 20, 30]
+    )
+    exercise.log_weights_today([15, 20, 25])
+    assert exercise.personal_record() == 30
 
 
 def test_no_pr(sample_exercise: Exercise):
