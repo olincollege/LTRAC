@@ -70,6 +70,18 @@ def test_to_json_correctness(sample_user: User):
     with open(
         "user_data/username/username.json", encoding="UTF-8"
     ) as created_json, open(
-        "target_data/username.json", encoding="UTF-8"
+        "target_data/username/username.json", encoding="UTF-8"
     ) as target_json:
         assert json.load(created_json) == json.load(target_json)
+
+
+def test_load_blank_user(sample_user: User):
+    """
+    Test that User.load_user_data loads properly
+
+    Args:
+        sample_user: The User object to use
+    """
+    loaded_user = User.load_user_data("username", directory="target_data")
+    target_user = sample_user
+    assert loaded_user.__dict__ == target_user.__dict__
