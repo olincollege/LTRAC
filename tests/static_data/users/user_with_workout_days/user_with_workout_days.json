@@ -1,0 +1,14 @@
+{
+    "_name": "user_with_workout_days",
+    "_xp_points": 0,
+    "_routines": [],
+    "_workout_days": {
+        "MONDAY": true,
+        "TUESDAY": false,
+        "WEDNESDAY": false,
+        "THURSDAY": true,
+        "FRIDAY": true,
+        "SATURDAY": false,
+        "SUNDAY": false
+    }
+}
