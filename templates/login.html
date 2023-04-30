@@ -89,7 +89,7 @@
     <h1>Login</h1>
     <form action="/auth" method="post">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+        <input type="text" id="username" name="username" pattern="[A-Za-z0-9]+" required>
         <button type="submit">Submit</button>
     </form>
 </main>

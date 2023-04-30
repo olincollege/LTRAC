@@ -47,7 +47,7 @@
 <h1> Name your routine</h1>
 <form action="/submit-routine" method="get">
     <label for="routine-name">Routine Name:</label>
-    <input type="text" id="routine-name" name="routine-name" maxlength="12" required>
+    <input type="text" id="routine-name" name="routine-name" pattern="[A-Za-z0-9]+" maxlength="12" required>
     <button type="submit">Make</button>
 </form>
 
