@@ -167,3 +167,17 @@ def test_load_user(name: str, attr_dict: dict):
             )
     loaded_user = User.load_user_data(name, directory="static_data/users")
     assert loaded_user == target_user
+
+
+def test_load_user_routine_history(sample_user_with_routine_data: User):
+    """
+    Test that User.load_user_data() loads routine history properly
+
+    Args:
+        sample_user_with_routine_data: The User object to use compare
+            correctness
+    """
+    loaded_user = User.load_user_data(
+        "user_with_routine_history", directory="static_data/users"
+    )
+    assert loaded_user.__dict__ == sample_user_with_routine_data.__dict__
