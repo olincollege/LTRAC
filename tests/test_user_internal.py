@@ -3,13 +3,14 @@ Unit tests for the User class internal methods
 """
 
 import sys
+from typing import List
 import pytest
-
 
 sys.path.append("./")
 
 # pylint: disable=import-error, wrong-import-position
 from modules.profile import User
+from modules.workouts import Routine
 
 
 @pytest.fixture
@@ -53,3 +54,27 @@ def test_level(sample_user: User, xp_gain: int, level: int):
     """
     sample_user.gain_xp(xp_gain)
     assert sample_user.level() == level
+
+
+add_routine_cases = [
+    # test adding one routine
+    [Routine("routine1")],
+    # test adding multiple routines
+    [Routine("routine1"), Routine("routine2"), Routine("routine3")],
+]
+
+
+@pytest.mark.parametrize("routines", add_routine_cases)
+def test_add_routine(sample_user: User, routines: List[Routine]):
+    """
+    Test that User.add_routine properly adds the routine
+
+    Args:
+        sample_user: The User object to use
+        routines: A list of Routine objects to be added to the User's routines
+    """
+    for routine in routines:
+        sample_user.add_routine(routine)
+    assert all(
+        sample_user.routines[routine.name] == routine for routine in routines
+    )
