@@ -1,0 +1,17 @@
+{%extends 'base.html'%} 
+
+{%block main%} 
+<style>
+    .exercise{
+        font-size: 30px;
+    }
+</style>
+
+
+<h1>My PRs for {{routine}}</h1>
+{%for _,exercise in exercises.items()%}
+    <h1 class="exercise">{{exercise.name}}: {{exercise.personal_record()}} lbs</h1>
+{%endfor%} 
+
+
+{%endblock%}
