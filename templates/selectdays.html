@@ -2,54 +2,96 @@
 
 {% block main%}
 <style>
+    .calendar{
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    form{
+        display: flex;
+        justify-content: center;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+
     .weekday-checkbox {
-  display: none;
-}
+      display: none;
+    }
 
-.weekday-text {
-  padding: 5px 10px;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  cursor: pointer;
-}
+  .weekday-text {
+      font-size: 25px;
+      padding: 5px 10px;
+      border: 2px solid #08712b;
+      border-radius: 3px;
+      cursor: pointer;
+    }
 
-.weekday-checkbox:checked + .weekday-text {
-  background-color: #ddd;
-}
+  .weekday-checkbox:checked + .weekday-text {
+      background-color: #24ab51;
+    }
 
+  button[type="submit"] {
+    background-color: #08712b;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #08712b;
+    }
+
+    .button-container{
+        display: inline-block;
+    }
 </style>
 
+
 <form action="/submit-days" method="POST">
-    <label>
-      <input type="checkbox" name="day" value="MONDAY" class="weekday-checkbox">
-      <span class="weekday-text">Monday</span>
-    </label>
-    <label>
-      <input type="checkbox" name="day" value="TUESDAY" class="weekday-checkbox">
-      <span class="weekday-text">Tuesday</span>
-    </label>
-    <label>
-      <input type="checkbox" name="day" value="WEDNESDAY" class="weekday-checkbox">
-      <span class="weekday-text">Wednesday</span>
-    </label>
-    <label>
-      <input type="checkbox" name="day" value="THURSDAY" class="weekday-checkbox">
-      <span class="weekday-text">Thursday</span>
-    </label>
-    <label>
-      <input type="checkbox" name="day" value="FRIDAY" class="weekday-checkbox">
-      <span class="weekday-text">Friday</span>
-    </label>
-    <label>
-      <input type="checkbox" name="day" value="SATURDAY" class="weekday-checkbox">
-      <span class="weekday-text">Saturday</span>
-    </label>
-    <label>
-      <input type="checkbox" name="day" value="SUNDAY" class="weekday-checkbox">
-      <span class="weekday-text">Sunday</span>
-    </label>
-    <button type="submit">Submit</button>
-  </form>
+  
+  <div class="container">
+    <div class="calendar">
+      <h1>Select Workout Days</h1>
+      <label>
+        <input type="checkbox" name="day" value="MONDAY" class="weekday-checkbox">
+        <span class="weekday-text">Monday</span>
+      </label>
+      <label>
+        <input type="checkbox" name="day" value="TUESDAY" class="weekday-checkbox">
+        <span class="weekday-text">Tuesday</span>
+      </label>
+      <label>
+        <input type="checkbox" name="day" value="WEDNESDAY" class="weekday-checkbox">
+        <span class="weekday-text">Wednesday</span>
+      </label>
+      <label>
+        <input type="checkbox" name="day" value="THURSDAY" class="weekday-checkbox">
+        <span class="weekday-text">Thursday</span>
+      </label>
+      <label>
+        <input type="checkbox" name="day" value="FRIDAY" class="weekday-checkbox">
+        <span class="weekday-text">Friday</span>
+      </label>
+      <label>
+        <input type="checkbox" name="day" value="SATURDAY" class="weekday-checkbox">
+        <span class="weekday-text">Saturday</span>
+      </label>
+      <label>
+        <input type="checkbox" name="day" value="SUNDAY" class="weekday-checkbox">
+        <span class="weekday-text">Sunday</span>
+      </label>
+    </div>
+    <div class="button-container">
+      <button type="submit">Submit</button>
+    </div>
+  </div>
+</form>
   
   
   
