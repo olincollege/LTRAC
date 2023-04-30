@@ -20,3 +20,16 @@ def sample_exercise():
         An Exercise object with the name "sample" and sets equal to 3
     """
     return Exercise("sample", 3)
+
+
+# pylint: disable=redefined-outer-name
+def test_weights_get_logged(sample_exercise: Exercise):
+    """
+    Test that the method logged exercises appear in the exercise's history
+
+    Args:
+        sample_exercise: The Exercise object to use
+    """
+    exercise = sample_exercise
+    exercise.log_weights_today([1, 2, 3])
+    assert exercise.history.popitem()[1] == [1, 2, 3]
