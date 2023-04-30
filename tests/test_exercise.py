@@ -45,3 +45,14 @@ def test_wrong_number_of_sets(sample_exercise: Exercise):
     exercise = sample_exercise
     with pytest.raises(ValueError):
         exercise.log_weights_today([1, 2])
+
+
+def test_no_pr(sample_exercise: Exercise):
+    """
+    Test that personal_record returns None when there is no history
+
+    Args:
+        sample_exercise: The Exercise object to use
+    """
+    exercise = sample_exercise
+    assert exercise.personal_record() is None
