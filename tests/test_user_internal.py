@@ -11,6 +11,7 @@ sys.path.append("./")
 # pylint: disable=import-error, wrong-import-position
 from modules.profile import User
 from modules.workouts import Routine
+from modules.dates import Weekday
 
 
 @pytest.fixture
@@ -78,3 +79,26 @@ def test_add_routine(sample_user: User, routines: List[Routine]):
     assert all(
         sample_user.routines[routine.name] == routine for routine in routines
     )
+
+
+set_workout_days_cases = [
+    # test setting one day
+    [Weekday.MONDAY],
+    # test setting multiple days
+    [Weekday.MONDAY, Weekday.THURSDAY, Weekday.FRIDAY],
+]
+
+
+@pytest.mark.parametrize("days", set_workout_days_cases)
+def test_set_workout_days(sample_user: User, days: List[Weekday]):
+    """
+    Test that User.set_workout_days properly sets workout days
+
+    Args:
+        sample_user: The User object to use
+        days: A list of Weekday objects to be set as the User's workout days
+    """
+    sample_user.set_workout_days(days)
+    assert {
+        day for day, value in sample_user.workout_days.items() if value
+    } == set(days)
