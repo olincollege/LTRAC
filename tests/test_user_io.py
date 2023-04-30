@@ -1,5 +1,5 @@
 """
-Unit tests for User class
+Unit tests for the User class loading from and exporting to files
 """
 
 import sys
