@@ -1,9 +1,9 @@
 """
 website framework
 """
-
-from flask import url_for, Flask, render_template, request, redirect, session
 from pathlib import Path
+from flask import url_for, Flask, render_template, request, redirect
+import pandas as pd
 from modules.workouts import Exercise, Routine
 from modules.profile import User
 from modules.dates import Weekday
@@ -62,6 +62,8 @@ def profile():
 
     return render_template(
         "profile.html",
+        routines=user.routines,
+        length=len(user.routines),
         username=user.name,
         photo=profile_pic,
         level=user.level(),
@@ -94,6 +96,34 @@ def photo_uploaded():
 #     global username
 #     username = request.args.get("new_username")
 #     return redirect(url_for("profile"))
+
+
+@app.route("/profile/<routine>/history")
+def routine_history(routine):
+    """
+    Displays selected routine's .csv file in a html table
+    """
+    df = pd.read_csv(f"user_data/{user.name}/{routine}/{routine}.csv")
+    df = df[df.columns[1:]]
+    return render_template(
+        "routinehistory.html", routine=routine, data=df.to_html(index=False)
+    )
+
+
+@app.route("/profile/<routine>/PRs")
+def personal_records(routine):
+    """
+    Displays PRs for all exercises in a selected routine
+    """
+    exercises = user.routines[routine].exercises
+    print(exercises)
+    return render_template(
+        "viewPR.html",
+        routine=routine,
+        exercises=exercises,
+        length=len(exercises),
+    )
+
 
 # ---------Everything that is linked with the Plan page--------- #
 

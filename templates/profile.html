@@ -2,6 +2,10 @@
 
 {% block main%}
 <style>
+    .profile-container{
+        padding-bottom: 20px;
+    }
+
     .photo-frame,
     .name-and-edit{
         display: inline-block;
@@ -12,7 +16,7 @@
         height: 190px;
         border: 4px solid black;
         margin-right: 10px;
-        overflow: hidden
+        overflow: hidden    
     }
 
     .photo-frame img{
@@ -47,18 +51,79 @@
         border-radius: 5px;
         cursor: pointer;
     }
+
+    .routines{
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .routine-block{
+        margin-right: 60px;
+    }
+
+    .routine-name{
+        font-size:30px;
+        margin-left: 38px;
+        margin-right: 50px;
+    }
+
+    a{
+        text-decoration: none;
+    }
+
+    .no-routine-msg{
+        font-size: 30px;
+    }
+
+    .PRs{
+        padding-top: 20px;
+    }
+
 </style>
-<h1>My profile</h1>
-<div class = "photo-frame">
-    <!-- this displays the photo -->
-    <img src= "{{url_for('static',filename=photo)}}" alt="profile-picture">
+<div class="profile-container">
+    <h1>My profile</h1>
+    <div class = "photo-frame">
+        <!-- this displays the photo -->
+        <img src= "{{url_for('static',filename=photo)}}" alt="profile-picture">
+    </div>
+    <div class="name-and-edit">
+        <label class="username">{{ username }}</label><br>
+        <label class="level">Level: {{level}}</label><br><br><br><br><br><br>
+        <a class="button" href="/edit-profile">Edit Profile</a>
+    </div>
 </div>
-<div class="name-and-edit">
-    <label class="username">{{ username }}</label><br>
-    <label class="level">Level: {{level}}</label><br><br><br><br><br><br>
-    <a class="button" href="/edit-profile">Edit Profile</a>
+
+<h1 class="history">View Routine History</h1>
+<div class="routines">
+    {%if length !=0%}
+    {%for _,routine in routines.items()%}
+        <div class="routine-block">
+            <a href="{{url_for('routine_history',routine=routine.name)}}">
+                <h1 class="routine-name">
+                {{routine.name}}
+                </h1>
+            </a>
+        </div>
+    {%endfor%}
+    {%else%}
+        <h1 class="no-routine-msg">No routine history available</h1>
+    {% endif %}
 </div>
-<h1>My Stats</h1>
 
-
+<h1 class="PRs">View PRs</h1>
+<div class="routines"> 
+    {%if length !=0%}
+    {%for _,routine in routines.items()%}
+        <div class="routine-block">
+            <a href="{{url_for('personal_records',routine=routine.name)}}">
+                <h1 class="routine-name">
+                {{routine.name}}
+                </h1>
+            </a>
+        </div>
+    {%endfor%}
+    {%else%}
+        <h1 class="no-routine-msg">No PRs available</h1>
+    {% endif %}
+</div> 
 {%endblock%}

@@ -1,0 +1,19 @@
+{%extends 'base.html'%} 
+
+{%block main%} 
+<style>
+table {
+  font-size: 1.2em;
+}
+
+th,td {
+  padding: 5px;
+  text-align: center;
+}
+</style>
+<h1>Workout History for {{routine}}</h1>
+<body>
+    {{data|safe}}
+</body>
+
+{%endblock%}

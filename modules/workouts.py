@@ -84,7 +84,7 @@ class Exercise:
             ValueError: Inputted number of weights does not match number of
                 sets for the exercise
         """
-        if len(weights) != self.sets:
+        if len(weights) != int(self.sets):
             raise ValueError(
                 "Number of weights logged does not match number of sets"
             )
