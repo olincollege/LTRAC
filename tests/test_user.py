@@ -40,9 +40,31 @@ def sample_user():
     Create a sample user to be used for testing
 
     Returns:
-        An user object with the name "username"
+        A user object with the name "username"
     """
     return User("username")
+
+
+@pytest.fixture
+# pylint: disable=redefined-outer-name
+def sample_user_with_routine_data(sample_user: User):
+    """
+    Create a sample user with logged routines to be used for testing
+
+    Returns:
+        A user object with logged routines
+    """
+    user = sample_user
+    user.add_routine(Routine("routine1"))
+    user.routines["routine1"].add_exercise(Exercise("exercise1", 2))
+    user.routines["routine1"].add_exercise(Exercise("exercise2", 2))
+    user.routines["routine1"].exercises["exercise1"].log_weights(
+        "2023-04-30", [1, 2]
+    )
+    user.routines["routine1"].exercises["exercise2"].log_weights(
+        "2023-04-30", [1, 2]
+    )
+    return user
 
 
 # pylint: disable=redefined-outer-name
@@ -78,18 +100,7 @@ def test_to_json_correctness(sample_user: User):
         assert json.load(created_json) == json.load(target_json)
 
 
-load_user_cases = [
-    ("username", {}),
-    ("user_with_xp", {"xp_points": 1000}),
-    (
-        "user_with_workout_days",
-        {"workout_days": [Weekday.MONDAY, Weekday.THURSDAY, Weekday.FRIDAY]},
-    ),
-    ("user_with_routines", {"routines": ["routine1", "routine2"]}),
-]
-
-
-def test_export_routines(sample_user: User):
+def test_export_routines(sample_user_with_routine_data: User):
     """
     Test that User.export_routines creates a routine directory, json, and csv
     that matches the expected structure
@@ -97,17 +108,7 @@ def test_export_routines(sample_user: User):
     Args:
         sample_user: The User object to use
     """
-    user = sample_user
-    user.add_routine(Routine("routine1"))
-    user.routines["routine1"].add_exercise(Exercise("exercise1", 2))
-    user.routines["routine1"].add_exercise(Exercise("exercise2", 2))
-    user.routines["routine1"].exercises["exercise1"].log_weights(
-        "2023-04-30", [1, 2]
-    )
-    user.routines["routine1"].exercises["exercise2"].log_weights(
-        "2023-04-30", [1, 2]
-    )
-    user.export_routines()
+    sample_user_with_routine_data.export_routines()
 
     with open(
         "user_data/username/routine1/routine1.json", "r", encoding="UTF-8"
@@ -122,6 +123,17 @@ def test_export_routines(sample_user: User):
             json.load(created_json) == json.load(target_json)
             and created_csv.readlines() == target_csv.readlines()
         )
+
+
+load_user_cases = [
+    ("username", {}),
+    ("user_with_xp", {"xp_points": 1000}),
+    (
+        "user_with_workout_days",
+        {"workout_days": [Weekday.MONDAY, Weekday.THURSDAY, Weekday.FRIDAY]},
+    ),
+    ("user_with_routines", {"routines": ["routine1", "routine2"]}),
+]
 
 
 @pytest.mark.parametrize("name,attr_dict", load_user_cases)
