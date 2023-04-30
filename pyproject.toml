@@ -12,3 +12,8 @@ max-line-length = 80
 
 [tool.pylint."messages control"]
 disable = ["c-extension-no-member"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]
