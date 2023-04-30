@@ -71,9 +71,9 @@ def test_to_json_correctness(sample_user: User):
     """
     sample_user.to_json()
     with open(
-        "user_data/username/username.json", encoding="UTF-8"
+        "user_data/username/username.json", "r", encoding="UTF-8"
     ) as created_json, open(
-        "static_data/users/username/username.json", encoding="UTF-8"
+        "static_data/users/username/username.json", "r", encoding="UTF-8"
     ) as target_json:
         assert json.load(created_json) == json.load(target_json)
 
