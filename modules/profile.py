@@ -75,7 +75,7 @@ class User:
         return self._workout_days
 
     @classmethod
-    def load_user_data(cls, user_name: str):
+    def load_user_data(cls, user_name: str, directory: str = "user_data"):
         """
         Load user data from user json as well as all associated routine data
 
@@ -86,7 +86,7 @@ class User:
 
         # load user json
         with open(
-            f"user_data/{name_no_spaces}/{name_no_spaces}.json",
+            f"{directory}/{name_no_spaces}/{name_no_spaces}.json",
             "r",
             encoding="UTF-8",
         ) as file:
@@ -106,7 +106,7 @@ class User:
         for routine_name in json_dict["_routines"]:
             routine_name_no_spaces = routine_name.replace(" ", "_")
             # pylint: disable=line-too-long
-            path = f"user_data/{name_no_spaces}/{routine_name_no_spaces}/{routine_name_no_spaces}"
+            path = f"{directory}/{name_no_spaces}/{routine_name_no_spaces}/{routine_name_no_spaces}"
             user.add_routine(Routine.from_json(f"{path}.json"))
             user.routines[routine_name].load_log(f"{path}.csv")
         return user
