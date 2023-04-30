@@ -21,3 +21,16 @@ def sample_user():
         A user object with the name "username"
     """
     return User("username")
+
+
+# pylint: disable=redefined-outer-name
+def test_gain_xp(sample_user: User):
+    """
+    Test that User.gain_xp adds the correct ammount of xp to the User
+
+    Args:
+        sample_user: The User object to use
+    """
+    xp_gain = 1000
+    sample_user.gain_xp(xp_gain)
+    assert sample_user.xp_points == xp_gain
