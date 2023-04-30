@@ -46,6 +46,9 @@ class User:
             Weekday.SUNDAY: False,
         }
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
     @property
     def name(self):
         """
@@ -75,18 +78,21 @@ class User:
         return self._workout_days
 
     @classmethod
-    def load_user_data(cls, user_name: str):
+    def load_user_data(cls, user_name: str, directory: str = "user_data"):
         """
         Load user data from user json as well as all associated routine data
 
         Args:
             user_name: A string representing the user's name to load
+            directory: A string representing the base directory of the user's
+                data, for example the user's json file will be located at
+                [directory]/[user_name]/[user_name].json
         """
         name_no_spaces = user_name.replace(" ", "_")
 
         # load user json
         with open(
-            f"user_data/{name_no_spaces}/{name_no_spaces}.json",
+            f"{directory}/{name_no_spaces}/{name_no_spaces}.json",
             "r",
             encoding="UTF-8",
         ) as file:
@@ -106,7 +112,7 @@ class User:
         for routine_name in json_dict["_routines"]:
             routine_name_no_spaces = routine_name.replace(" ", "_")
             # pylint: disable=line-too-long
-            path = f"user_data/{name_no_spaces}/{routine_name_no_spaces}/{routine_name_no_spaces}"
+            path = f"{directory}/{name_no_spaces}/{routine_name_no_spaces}/{routine_name_no_spaces}"
             user.add_routine(Routine.from_json(f"{path}.json"))
             user.routines[routine_name].load_log(f"{path}.csv")
         return user
