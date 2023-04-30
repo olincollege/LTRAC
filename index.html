@@ -1,14 +1,162 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<title>LTRAC</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>LTRAC Gym Tracker</title>
+	<style>
+
+		.logo{
+            width:250px;
+            height: auto;
+        }
+
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+		}
+
+		header {
+			background-color: #08712b;
+			color: #fff;
+			padding: 20px;
+			text-align: center;
+			font-size: 34px;
+			font-weight: bold;
+		}
+		
+		main {
+			margin-left: 200px;
+			padding: 20px;
+		}
+		h1 {
+			font-size: 36px;
+			margin-bottom: 20px;
+			color: #000000;
+		}
+		p {
+			color: #666;
+			font-size: 18px;
+			line-height: 1.5;
+		}
+
+        /* Container for the main content */
+		.container {
+			margin: 20px;
+		}
+
+		/* Section headings */
+		.section-heading {
+			font-size: 40px;
+			font-weight: bold;
+			margin-top: 40px;
+		}
+
+		/* Image container */
+		.image-container {
+			display: inline-block;
+			margin: 20px;
+		}
+
+		/* Image */
+		.image {
+			display: block;
+            width: 180px;
+            height: 180px;
+            overflow: hidden;
+            margin-bottom: 35px;
+		}
+
+		.bio-content {
+  	        float: left;
+	        margin-right: 15px;
+	    }
+
+        .name{
+            font-size: 30px;
+        }
+
+        .bio-container {
+            display: flex;
+            flex-direction: column;
+        }
+	</style>
 </head>
+
 <body>
-    <h1>Lorem Ipsum</h1>
+	<header>
+        <img class="logo" src="img/logo.png" alt="LTRAC Logo">
+    </header>
+	<main>
+		<!-- Main content container -->
+	<div class="container">
 
+		<!-- Project description section -->
+		<div class="section">
+			<h2 class="section-heading">Project Description</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in risus eget metus tristique consectetur. Integer euismod velit id velit dictum, ut suscipit enim finibus. Vivamus quis bibendum nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+		</div>
 
+		<!-- Feature descriptions section -->
+		<div class="section">
+			<h2 class="section-heading">Feature Descriptions</h2>
+			<ul>
+				<li>Feature 1</li>
+				<li>Feature 2</li>
+				<li>Feature 3</li>
+			</ul>
+		</div>
 
+		<!-- Demo section -->
+		<div class="section">
+			<h2 class="section-heading">Product Demo</h2>
+			<div class="image-container">
+				<img class="image" src="demo-image-1.jpg">
+			</div>
+			<div class="image-container">
+				<img class="image" src="demo-image-2.jpg">
+			</div>
+			<div class="image-container">
+				<img class="image" src="demo-image-3.jpg">
+			</div>
+			<div class="image-container">
+				<img class="image" src="demo-image-4.jpg">
+			</div>
+		</div>
 
-
+		<!-- Creator bio section -->
+        <h2 class="section-heading">Creators</h2>
+        <div class="bio-container">
+            <div class='creator-block'>
+                <div class='bio-content'>
+                    <img class="image" src="img/bio.jpg" alt="Creator 3">
+                </div>
+                <div class='bio-content'>
+                    <h1 class="name">Dexter Friis-Hecht</h1>
+                    <p>Hi, I am a student in Olin College.</p>
+                </div>
+            </div>
+            <div class='creator-block'>
+                <div class='bio-content'>
+                    <img class="image" src="img/bio.jpg" alt="Creator 3">
+                </div>
+                <div class='bio-content'>
+                    <h1 class="name">Dokyun Kim</h1>
+                    <p>Hi, I am a student in Olin College.</p>
+                </div>
+            </div>
+            <div class='creator-block'>
+                <div class='bio-content'>
+                    <img class="image" src="img/bio.jpg" alt="Creator 3">
+                </div>
+                <div class='bio-content'>
+                    <h1 class="name">Ian Lum</h1>
+                    <p>Hi, I am a student in Olin College.</p>
+                </div>
+            </div>
+            </div>
+			         
+        
+	</main>
 </body>
 </html>
