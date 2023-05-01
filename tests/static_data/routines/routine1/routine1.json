@@ -2,23 +2,11 @@
     "_exercises": {
         "exercise1": {
             "_name": "exercise1",
-            "_sets": 2,
-            "_history": {
-                "2023-04-30": [
-                    1,
-                    2
-                ]
-            }
+            "_sets": 2
         },
         "exercise2": {
             "_name": "exercise2",
-            "_sets": 2,
-            "_history": {
-                "2023-04-30": [
-                    1,
-                    2
-                ]
-            }
+            "_sets": 2
         }
     },
     "_name": "routine1"
