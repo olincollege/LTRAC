@@ -59,14 +59,16 @@ def profile():
         profile_pic = f"img/{user.name}_profile_picture.jpg"
     else:
         profile_pic = "img/default_profile.jpg"
-
+    level = user.level()
+    level_fraction = user.xp_points - 1000 * user.level()
     return render_template(
         "profile.html",
         routines=user.routines,
         length=len(user.routines),
         username=user.name,
         photo=profile_pic,
-        level=user.level(),
+        level=level,
+        level_fraction=level_fraction,
     )
 
 
@@ -231,7 +233,19 @@ def submit_log(routine, day):
         user.routines[routine].export_log(
             f"user_data/{user.name}/{routine}/{routine}.csv"
         )
-    return redirect(url_for("logs_page", day=day))
+    return redirect(url_for("gain_xp", day=day))
+
+
+@app.route("/gainxp/<day>")
+def gain_xp(day):
+    """
+    Renders a page notifying the user that they gained xp
+    """
+    level = user.level()
+    level_fraction = user.xp_points - 1000 * user.level()
+    return render_template(
+        "gainxp.html", day=day, level=level, level_fraction=level_fraction
+    )
 
 
 # -------------------Calendar----------------------#

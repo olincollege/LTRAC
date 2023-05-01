@@ -23,6 +23,22 @@
         border-radius: 5px;
         cursor: pointer;
     }
+
+    #popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+#popup:target {
+  display: block;
+}
 </style>
 <form method="post" action="{{url_for('submit_log',routine=routine,day=day)}}">
     {% for _,exercise in inputs.items() %}
@@ -33,5 +49,6 @@
             {%endfor%}
     {% endfor %}
     <h1><button type="submit">Finish Logging</button></h1>
+    
 </form>
 {%endblock%}
