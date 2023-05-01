@@ -206,7 +206,8 @@ class Routine:
         """
         json_dict = self.__dict__.copy()
         json_dict["_exercises"] = {
-            key: ex.__dict__ for key, ex in json_dict["_exercises"].items()
+            key: {"_name": ex.name, "_sets": ex.sets}
+            for key, ex in json_dict["_exercises"].items()
         }
         with open(file_path, "w", encoding="UTF-8") as file:
             file.write(json.dumps(json_dict, indent=4))
