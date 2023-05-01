@@ -41,6 +41,10 @@
         margin-bottom:10px ;
     }
 
+    progress{
+        background-color: #08712b;
+    }
+
     .button {
         text-decoration: None;
         background-color: #08712b;
@@ -88,7 +92,10 @@
     </div>
     <div class="name-and-edit">
         <label class="username">{{ username }}</label><br>
-        <label class="level">Level: {{level}}</label><br><br><br><br><br><br>
+        <label class="level">Level: {{level}}</label><br>
+        <progress value={{level_fraction}} max="1000"> {{level_fraction}}% </progress>
+        <label>{{level_fraction}}/1000</label>
+        <br><br><br><br><br>
         <a class="button" href="/edit-profile">Edit Profile</a>
     </div>
 </div>

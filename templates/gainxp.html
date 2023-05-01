@@ -1,0 +1,43 @@
+{%extends 'base.html'%}
+
+{%block main%} 
+<style>
+    progress{
+        margin: 1px 10px;
+        background-color: #08712b;
+    }
+
+    p{
+        font-size: 25px;
+    }
+
+    label{
+        font-size: 20px;
+    }
+
+    button {
+        background-color: #08712b;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #08712b;
+    }
+</style>
+<div id="popup">
+    <h1>Workout Completed!</h1>
+    <p>Congratulations! You gained 100 xp for completing today's workout.</p>
+    <label for="file">Current Level: {{level}}</label>
+    <progress value={{level_fraction}} max="1000"> {{level_fraction}}% </progress>
+    <label>{{level_fraction}}/1000</label>
+    <br>
+    <br>
+    <a href="{{url_for('logs_page',day=day)}}"><button>Close</button></a>
+</div>
+
+
+{%endblock%}
