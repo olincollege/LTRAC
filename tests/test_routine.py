@@ -75,6 +75,12 @@ add_exercise_cases = [
 
 @pytest.mark.parametrize("exercises", add_exercise_cases)
 def test_add_exercise(exercises: List[Exercise]):
+    """
+    Test that Routine.add_exercise properly adds the routine
+
+    Args:
+        exercises: A list of Exercise objects to be added to the routine
+    """
     routine = Routine("routine1")
     for exercise in exercises:
         routine.add_exercise(exercise)
