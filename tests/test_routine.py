@@ -3,6 +3,7 @@ Unit tests for Routine class
 """
 
 import sys
+from typing import List
 import os
 import json
 import pytest
@@ -60,6 +61,28 @@ def sample_routine_with_log(sample_routine: Routine):
 
 
 # pylint: disable=redefined-outer-name
+add_exercise_cases = [
+    # test adding one exercise
+    [Exercise("exercise1", 2)],
+    # test adding multiple exercises
+    [
+        Exercise("exercise1", 2),
+        Exercise("exercise2", 2),
+        Exercise("exercise3", 2),
+    ],
+]
+
+
+@pytest.mark.parametrize("exercises", add_exercise_cases)
+def test_add_exercise(exercises: List[Exercise]):
+    routine = Routine("routine1")
+    for exercise in exercises:
+        routine.add_exercise(exercise)
+    assert all(
+        routine.exercises[exercise.name] == exercise for exercise in exercises
+    )
+
+
 def test_to_json(sample_routine_with_log: Routine):
     """
     Test that Routine.to_json creates a json file that matches the expected
