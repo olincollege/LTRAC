@@ -36,7 +36,7 @@
 		}
 		p {
 			color: #666;
-			font-size: 18px;
+			font-size: 22px;
 			line-height: 1.5;
 		}
 
@@ -59,35 +59,74 @@
 			margin-top: 40px;
 		}
 
-		/* Image container */
-		.image-container {
-			display: inline-block;
-			margin: 20px;
+
+ /* CSS for demo section */
+		.demo-container{
+			display:flex;
+			flex-direction: column;
 		}
 
-		/* Image */
+		.profile-demo-image,
+		.routine-demo-image,
+		.log-demo-image,
+		.xp-demo-image
+		{
+			border-radius: 10px;
+			border: 3px solid #08712b;
+			display: block;
+            width: 400px;
+            height: auto;
+            overflow: hidden;
+            margin-bottom: 35px;
+		}
+
+		.history-demo-image
+		{
+			float: left;
+			display: block;
+			width: 190px;
+			height: auto;
+			overflow: hidden;
+			margin-bottom: 35px;
+		}
+
+		.profile-demo-content,
+		.history-demo-content,
+		.routine-demo-content,
+		.log-demo-content,
+		.xp-demo-content{
+			float: left;
+			margin-right: 30px;
+		}
+
+		.history-img-container
+		{
+			display: inline-block;
+			padding: 0 10px;
+			border-radius: 10px;
+			border: 3px solid #08712b;
+			margin-bottom: 35px;
+		}
+
+
+ /* CSS for bio section */
+ 		.bio-container {
+            display: flex;
+            flex-direction: column;
+        }
+		.bio-content {
+  	        float: left;
+	        margin-right: 15px;
+	    }
+
 		.bio-image {
+			border-radius: 10px;
 			display: block;
             width: 180px;
             height: 180px;
             overflow: hidden;
             margin-bottom: 35px;
 		}
-
-		.demo-image {
-			display: block;
-            width: 200px;
-            height: auto;
-            overflow: hidden;
-            margin-bottom: 35px;
-		}
-
-
-		.bio-content {
-  	        float: left;
-	        margin-right: 15px;
-	    }
-
         .name{
             font-size: 30px;
         }
@@ -96,6 +135,7 @@
             display: flex;
             flex-direction: column;
         }
+
 	</style>
 </head>
 
@@ -104,9 +144,10 @@
         <img class="logo" src="img/logo.png" alt="LTRAC Logo">
     </header>
 	<main>
+
+
 		<!-- Main content container -->
 	<div class="container">
-
 		<!-- Project description section -->
 		<div class="section">
 			<h2 class="section-heading">Project Description</h2>
@@ -122,33 +163,92 @@
 			<h2 class="section-heading">Feature Descriptions</h2>
 			<ol>
 				<li>Customizable profile</li>
-				<li>Easy access to all workout history</li>
 				<li>View & edit all your routines in one page</li>
-				<li>Gain XP from completing a workout</li>
+				<li>Work out and level up</li>	
+				<li>Easy access to all workout history</li>
 			</ol>
 		</div>
 
 		<!-- Demo section -->
 		<div class="section">
 			<h2 class="section-heading">Product Demo</h2>
-			<div class="image-container">
-				<img class="demo-image" src="img/log_demo.jpg">
+
+			<div class="demo-container">
+				<div class="profile-demo-block">
+					<div class="profile-demo-content">
+						<img class="profile-demo-image" src="img/profile_demo.jpg">
+					</div>
+					<div class = "profile-demo-content">
+						<h1>Profile</h1>
+						<p>Easily customize your own profile with one click</p>
+					</div>
+				</div>
+
+				<div class="routine-demo-block">
+					<div class="routine-demo-content">
+						<img class="routine-demo-image" src="img/routine_demo.jpg">
+					</div>
+					<div class = "routine-demo-content">
+						<h1>Manage Routines</h1>
+						<p>View & Edit all routines in one page</p>
+					</div>
+				</div>
+
+				<div class="log-demo-block">
+					<div class="log-demo-content">
+						<img class="log-demo-image" src="img/log_demo.jpg">
+					</div>
+					<div class = "log-demo-content">
+						<h1>Logging made easy</h1>
+						<p>Log weights for all exercises in one screen</p>
+					</div>
+				</div>
+				
+
+				<div class="xp-demo-block">
+					<div class="xp-demo-content">
+						<img class="xp-demo-image" src="img/xp_demo.jpg">
+					</div>
+					<div class = "xp-demo-content">
+						<h1>XP system</h1>
+						<p>Work hard and level up</p>
+					</div>
+				</div>
+
+
+				<div class="history-demo-block">
+						<div class="history-demo-content">
+							<div class="history-img-container">
+							<img class="history-demo-image" src="img/history_demo.jpg">
+							<img class="history-demo-image" src="img/PR_demo.jpg">							
+							</div>
+						</div>
+
+					<div class = "history-demo-content">
+						<h1>Workout History</h1>
+						<p>View all routine history in one page<br>
+							Easily view all PRs for selected routine
+						</p>
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
 			</div>
-			<div class="image-container">
-				<img class="demo-image" src="img/history_demo.jpg">
-			</div>
-			<div class="image-container">
-				<img class="demo-image" src="img/PR_demo.jpg">
-			</div>
-			<div class="image-container">
-				<img class="image" src="img/xp_demo.jpg">
-			</div>
-			<div class="image-container">
-				<img class="image" src="img/profile_demo.jpg">
-			</div>
-			<div class="image-container">
-				<img class="image" src="img/routine_demo.jpg">
-			</div>
+		
+			
+
+
+
+			
 			<h2>Watch our demo video</h2>
 			<iframe width="560" height="315" src="https://www.youtube.com/embed/G-fJJ-OHLDw" 
 			frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
