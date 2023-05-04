@@ -22,7 +22,7 @@
 
     .routine-block{
         margin-right: 60px;
-        margin-top: 30px;
+        margin-top: 0px;
     }
     
     a{
@@ -49,8 +49,10 @@
 
 <h1>My Routines</h1>
 <a class="button" href="/add-routine">Create new routine</a><br><br>
-<div class="routines">
+
     {%if length != 0%}
+    <h2>Click on a routine to add exercises</h2>
+    <div class="routines">
         {%for _, routine in routines.items()%}
             <div class="routine-block">
                 <a href="{{url_for('add_new_exercise',routine=routine.name)}}">
