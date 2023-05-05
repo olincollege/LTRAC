@@ -1,5 +1,5 @@
 """
-website framework
+Website routing using Flask
 """
 from pathlib import Path
 from flask import url_for, Flask, render_template, request, redirect
@@ -15,7 +15,7 @@ app = Flask(__name__)
 @app.route("/")
 def login():
     """
-    Login page
+    Renders login page
     """
     return render_template("login.html")
 
@@ -104,6 +104,9 @@ def photo_uploaded():
 def routine_history(routine):
     """
     Displays selected routine's .csv file in a html table
+
+    Args:
+        routine: String representing name of routine
     """
     df = pd.read_csv(f"user_data/{user.name}/{routine}/{routine}.csv")
     df = df[df.columns[1:]]
@@ -116,6 +119,9 @@ def routine_history(routine):
 def personal_records(routine):
     """
     Displays PRs for all exercises in a selected routine
+
+    Args:
+        routine: String representing name of routine
     """
     exercises = user.routines[routine].exercises
     print(exercises)
@@ -171,6 +177,9 @@ def submit_routine():
 def add_new_exercise(routine):
     """
     Renders page for adding new exercise
+
+    Args:
+        routine: String representing name of routine
     """
     return render_template("addexercise.html", routine_name=routine)
 
@@ -180,6 +189,9 @@ def submit_exercise(routine):
     """
     Adds new exercise to routine
     Sends user back to add more exercises
+
+    Args:
+        routine: String representing name of routine
     """
     # Add new exercise entered by user in webpage
     user.routines[routine].add_exercise_from_input("exercise-name", "sets")
@@ -194,6 +206,9 @@ def submit_exercise(routine):
 def logs_page(day):
     """
     Renders logging page
+
+    Args:
+        day: String reprenting what day of the week it is
     """
     print(user.routines)
     return render_template(
@@ -205,6 +220,10 @@ def logs_page(day):
 def log_exercise(day, routine):
     """
     Renders page for user to enter weights for each exercise in a routine
+
+    Args:
+        day: String reprenting what day of the week it is
+        routine: String representing name of routine
     """
     exercise_dict = user.routines[routine].exercises
     print(exercise_dict)
@@ -217,6 +236,10 @@ def log_exercise(day, routine):
 def submit_log(routine, day):
     """
     Submit weights user entered
+
+    Args:
+        day: String reprenting what day of the week it is
+        routine: String representing name of routine
     """
 
     if request.method == "POST":
@@ -240,6 +263,9 @@ def submit_log(routine, day):
 def gain_xp(day):
     """
     Renders a page notifying the user that they gained xp
+
+    Args:
+        day: String reprenting what day of the week it is
     """
     level = user.level()
     level_fraction = user.xp_points - 1000 * user.level()
