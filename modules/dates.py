@@ -19,16 +19,25 @@ class Weekday(Enum):
     SUNDAY = 6
 
 
-def get_week():
+def get_week(today=str(datetime.date.today())):
     """
     Based on the current date, finds the numerical day values
     for every day in the current week.
 
+    Args:
+        today: a datetime.date object representing the current date.
     Returns:
         A list of tuples which contain a Weekday object representing the name
         of the day, followed by the numerical day value.
     """
-    today = datetime.date.today()
+    if isinstance(today, str) is False:
+        return "TypeError: Date needs to be a string."
+    try:
+        datetime.datetime.fromisoformat(today)
+        today = datetime.date.fromisoformat(today)
+    except ValueError:
+        return "ValueError: Date is not a string in ISO format."
+
     weekday = datetime.date.weekday(today)
     start_of_week = today - datetime.timedelta(days=weekday)
     week_dates = [
@@ -38,4 +47,5 @@ def get_week():
         )
         for day_number in range(7)
     ]
+    week_dates.append(today)
     return week_dates
